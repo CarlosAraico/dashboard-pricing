@@ -1,12 +1,13 @@
-<!-- /index.html -->
 <!doctype html>
-<html lang="es">
+<html lang="es" class="h-full">
 <head>
   <meta charset="utf-8" />
   <link rel="icon" href="data:,">
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
   <title>Comparativo de ventas TDM 2025 vs 2026 · Enero–Mayo</title>
 
+  <!-- Tailwind Play CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -14,21 +15,141 @@
       theme: {
         extend: {
           fontFamily: { sans: ['ui-sans-serif','system-ui','Segoe UI','Roboto','Arial'] },
-          boxShadow: { soft3d: '0 12px 30px -18px rgba(2,6,23,.45), 0 2px 8px -6px rgba(2,6,23,.25)' }
+          boxShadow: {
+            soft3d: '0 14px 34px -20px rgba(2,6,23,.45), 0 2px 10px -8px rgba(2,6,23,.28)',
+            inset3d: 'inset 0 1px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(2,6,23,.06)',
+          }
         }
       }
     }
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Chart.js + Annotation plugin -->
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+
+  <!-- VanillaTilt (3D minimalista) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+
+  <!-- Design System (Tailwind-in-CSS via Play CDN) -->
+  <style type="text/tailwindcss">
+    @layer base {
+      :root{
+        --bg0: 248 250 252; /* slate-50 */
+        --bg1: 241 245 249; /* slate-100 */
+        --card: 255 255 255;
+        --card2: 255 255 255;
+        --fg: 15 23 42;     /* slate-900 */
+        --muted: 100 116 139; /* slate-500/600 */
+        --ring: 226 232 240;  /* slate-200 */
+        --accent: 15 23 42;
+        --good: 16 185 129; /* emerald-500 */
+        --warn: 245 158 11; /* amber-500 */
+        --bad: 244 63 94;   /* rose-500 */
+      }
+      .dark{
+        --bg0: 2 6 23;      /* slate-950 */
+        --bg1: 15 23 42;    /* slate-900 */
+        --card: 2 6 23;
+        --card2: 15 23 42;
+        --fg: 248 250 252;  /* slate-50 */
+        --muted: 148 163 184; /* slate-400 */
+        --ring: 51 65 85;   /* slate-700 */
+        --accent: 248 250 252;
+      }
+
+      body{ @apply font-sans antialiased; }
+      summary::-webkit-details-marker{ display:none; }
+      ::selection{ @apply bg-slate-900 text-white dark:bg-white dark:text-slate-900; }
+    }
+
+    @layer components {
+      .app-bg{
+        @apply min-h-screen;
+        background:
+          radial-gradient(1200px 600px at 10% 0%, rgba(59,130,246,.10), transparent 55%),
+          radial-gradient(900px 500px at 90% 10%, rgba(244,63,94,.08), transparent 55%),
+          linear-gradient(to bottom, rgb(var(--bg0)), rgb(var(--bg1)));
+        color: rgb(var(--fg));
+      }
+
+      .surface{
+        @apply rounded-2xl ring-1 backdrop-blur;
+        background: color-mix(in oklab, rgb(var(--card)) 78%, transparent);
+        border-color: rgb(var(--ring));
+        box-shadow: theme(boxShadow.soft3d), theme(boxShadow.inset3d);
+        transform: translateZ(0);
+      }
+      .surface-hover{
+        @apply transition will-change-transform;
+      }
+      @media (hover:hover) {
+        .surface-hover:hover{ @apply -translate-y-0.5; }
+      }
+
+      .topbar{
+        @apply flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between;
+      }
+
+      .btn{
+        @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm
+               ring-1 ring-slate-200 dark:ring-slate-700
+               bg-white/70 dark:bg-slate-950/35
+               transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600;
+        box-shadow: theme(boxShadow.soft3d), theme(boxShadow.inset3d);
+      }
+      .btn:hover{ @apply -translate-y-0.5; }
+      .btn-primary{
+        @apply bg-slate-900 text-white dark:bg-white dark:text-slate-900 ring-transparent;
+      }
+
+      .pill{
+        @apply rounded-xl px-3 py-2 text-xs ring-1;
+        background: color-mix(in oklab, rgb(var(--card2)) 70%, transparent);
+        border-color: rgb(var(--ring));
+        box-shadow: theme(boxShadow.soft3d), theme(boxShadow.inset3d);
+      }
+
+      .field{
+        @apply mt-1 w-full rounded-xl px-3 py-2 text-sm
+               border border-slate-200 dark:border-slate-700
+               bg-white/80 dark:bg-slate-950/30
+               shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600;
+      }
+
+      .chip{
+        @apply inline-flex items-center rounded-full px-3 py-1 text-xs
+               ring-1 ring-slate-200 dark:ring-slate-700
+               bg-white/70 dark:bg-slate-950/30
+               transition;
+      }
+
+      .table-wrap{
+        @apply mt-4 overflow-x-auto rounded-xl ring-1 ring-slate-200/60 dark:ring-slate-700/60;
+      }
+      .thead{
+        @apply text-xs sticky top-0 bg-white/90 dark:bg-slate-950/45 backdrop-blur;
+      }
+
+      tbody.zebra tr:nth-child(odd){ background: rgba(2,6,23,0.03); }
+      html.dark tbody.zebra tr:nth-child(odd){ background: rgba(255,255,255,0.04); }
+      tbody.zebra tr:hover{ filter: brightness(0.98); }
+      html.dark tbody.zebra tr:hover{ filter: brightness(1.05); }
+    }
+
+    @layer utilities {
+      .text-balance{ text-wrap: balance; }
+    }
+  </style>
 </head>
 
-<body class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900 dark:from-slate-950 dark:to-slate-900 dark:text-slate-50">
+<body class="app-bg">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
     <!-- Header -->
     <header class="flex flex-col gap-4">
-      <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+      <div class="topbar">
         <div class="min-w-0">
-          <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight">
+          <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight text-balance">
             Comparativo de ventas TDM 2025 vs 2026 · Enero–Mayo
           </h1>
           <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">
@@ -37,38 +158,31 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-2">
-          <button id="themeToggle"
-            class="rounded-xl bg-white/70 dark:bg-slate-900/60 ring-1 ring-slate-200 dark:ring-slate-700 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
-            Tema: <span id="themeLabel" class="font-medium">—</span>
+          <button id="themeToggle" class="btn">
+            🌗 Tema: <span id="themeLabel" class="font-medium">—</span>
           </button>
 
-          <div class="text-xs text-slate-600 dark:text-slate-300 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-xl px-3 py-2 shadow-soft3d">
+          <div class="pill text-slate-600 dark:text-slate-300">
             <div class="font-medium">Versión de datos</div>
             <div id="dataVersion">—</div>
           </div>
 
-          <div class="text-xs text-slate-600 dark:text-slate-300 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-xl px-3 py-2 shadow-soft3d">
+          <div class="pill text-slate-600 dark:text-slate-300">
             <div class="font-medium">Último refresh</div>
             <div id="lastRefresh">—</div>
           </div>
         </div>
       </div>
 
-      <!-- Sticky: Controls + KPIs (accordion on mobile, open on tablet/desktop) -->
-      <details id="accControls"
-        data-responsive
-        class="sticky top-2 z-40 sm:static bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d">
-        <summary
-          class="list-none cursor-pointer select-none px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between gap-3">
+      <!-- Sticky: Controls + KPIs -->
+      <details id="accControls" data-responsive class="surface surface-hover sticky top-2 z-40 sm:static">
+        <summary class="list-none cursor-pointer select-none px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between gap-3">
           <div class="min-w-0">
             <div class="font-semibold">Filtros & KPIs</div>
             <div class="text-xs text-slate-600 dark:text-slate-300">Toca para abrir/cerrar (móvil)</div>
           </div>
-          <div class="flex items-center gap-2">
-            <span class="hidden sm:inline text-xs text-slate-500 dark:text-slate-400">Siempre visible en desktop</span>
-            <span class="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-white/70 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700">
-              ▾
-            </span>
+          <div class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/70 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700">
+            ▾
           </div>
         </summary>
 
@@ -77,52 +191,30 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2">
               <div class="flex flex-col">
                 <label class="text-xs font-medium text-slate-600 dark:text-slate-300">Sucursal</label>
-                <select id="fSucursal"
-                  class="mt-1 rounded-xl border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-950/30 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
-                </select>
+                <select id="fSucursal" class="field"></select>
               </div>
 
               <div class="flex flex-col">
                 <label class="text-xs font-medium text-slate-600 dark:text-slate-300">Mes</label>
-                <select id="fMes"
-                  class="mt-1 rounded-xl border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-950/30 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
-                </select>
+                <select id="fMes" class="field"></select>
               </div>
 
               <div class="flex flex-col">
                 <label class="text-xs font-medium text-slate-600 dark:text-slate-300">Canal</label>
-                <select id="fCanal"
-                  class="mt-1 rounded-xl border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-950/30 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
-                </select>
+                <select id="fCanal" class="field"></select>
               </div>
 
               <div class="flex flex-col">
                 <label class="text-xs font-medium text-slate-600 dark:text-slate-300">Buscar sucursal</label>
-                <input id="fSearch" type="text" placeholder="Ej. POLANCO, TLALPAN..."
-                  class="mt-1 rounded-xl border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-950/30 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600" />
+                <input id="fSearch" type="text" placeholder="Ej. POLANCO, TLALPAN..." class="field" />
               </div>
             </div>
 
             <div class="flex flex-wrap items-center gap-2">
-              <button id="toggleView"
-                class="rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
-                Ver: $
-              </button>
-
-              <button id="btnReset"
-                class="rounded-xl bg-white/80 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
-                Reset
-              </button>
-
-              <button id="btnExportJSON"
-                class="rounded-xl bg-white/80 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
-                Export JSON
-              </button>
-
-              <button id="btnExportCSV"
-                class="rounded-xl bg-white/80 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
-                Export CSV
-              </button>
+              <button id="toggleView" class="btn btn-primary">Ver: $</button>
+              <button id="btnReset" class="btn">Reset</button>
+              <button id="btnExportJSON" class="btn">Export JSON</button>
+              <button id="btnExportCSV" class="btn">Export CSV</button>
             </div>
           </div>
 
@@ -136,190 +228,190 @@
       </details>
     </header>
 
-    <!-- Executive strip -->
-    <section class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-4">
-      <div class="lg:col-span-6 bg-rose-50/70 dark:bg-rose-950/25 backdrop-blur ring-1 ring-rose-200/70 dark:ring-rose-800/40 rounded-2xl shadow-soft3d p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
-        <div class="flex items-center gap-2">
-          <span class="text-rose-700 dark:text-rose-200">🚩</span>
-          <h2 class="font-semibold text-rose-800 dark:text-rose-100">Banderas Rojas (Alertas)</h2>
-        </div>
-        <ol id="redFlagsList" class="mt-4 space-y-3 text-sm text-rose-900 dark:text-rose-100"></ol>
-        <div id="redFlagsEmpty" class="mt-4 text-sm text-rose-800/80 dark:text-rose-200/80 hidden">
-          Sin alertas con los filtros actuales.
-        </div>
-      </div>
-
-      <div class="lg:col-span-6 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
-        <div class="flex items-center gap-2">
-          <span class="text-amber-600 dark:text-amber-200">⚡</span>
-          <h2 class="font-semibold">Plan de Acción Inmediato</h2>
-        </div>
-        <div id="actionPlanList" class="mt-4 space-y-3"></div>
-      </div>
-
-      <!-- Ranking: accordion on mobile -->
-      <details id="accRanking"
-        data-responsive
-        class="lg:col-span-12 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition">
-        <summary class="list-none cursor-pointer select-none px-5 py-4 flex items-center justify-between gap-3">
-          <div class="min-w-0">
-            <div class="font-semibold">Ranking de Sucursales</div>
-            <div class="text-sm text-slate-600 dark:text-slate-300">Prioridad de acción · Top 5</div>
-            <div class="text-xs text-slate-500 dark:text-slate-400" id="concentrationTxt">—</div>
+    <main>
+      <!-- Executive strip -->
+      <section class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="surface surface-hover lg:col-span-6 p-5"
+             style="background: color-mix(in oklab, rgb(var(--bad)) 6%, rgb(var(--card)) 90%);"
+             data-tilt>
+          <div class="flex items-center gap-2">
+            <span class="text-rose-700 dark:text-rose-200">🚩</span>
+            <h2 class="font-semibold text-rose-800 dark:text-rose-100">Banderas Rojas (Alertas)</h2>
           </div>
-          <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/70 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700">
-            ▾
-          </span>
-        </summary>
+          <ol id="redFlagsList" class="mt-4 space-y-3 text-sm text-rose-900 dark:text-rose-100"></ol>
+          <div id="redFlagsEmpty" class="mt-4 text-sm text-rose-800/80 dark:text-rose-200/80 hidden">
+            Sin alertas con los filtros actuales.
+          </div>
+        </div>
 
-        <div class="px-5 pb-5">
-          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-            <div class="text-xs text-slate-500 dark:text-slate-400">
-              Tip: en móvil, colapsa para ver gráficas más rápido.
+        <div class="surface surface-hover lg:col-span-6 p-5" data-tilt>
+          <div class="flex items-center gap-2">
+            <span class="text-amber-600 dark:text-amber-200">⚡</span>
+            <h2 class="font-semibold">Plan de Acción Inmediato</h2>
+          </div>
+          <div id="actionPlanList" class="mt-4 space-y-3"></div>
+        </div>
+
+        <!-- Ranking -->
+        <details id="accRanking" data-responsive class="surface surface-hover lg:col-span-12" data-tilt>
+          <summary class="list-none cursor-pointer select-none px-5 py-4 flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <div class="font-semibold">Ranking de Sucursales</div>
+              <div class="text-sm text-slate-600 dark:text-slate-300">Prioridad de acción · Top 5</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400" id="concentrationTxt">—</div>
             </div>
-            <div class="inline-flex rounded-xl ring-1 ring-slate-200 dark:ring-slate-700 bg-white/70 dark:bg-slate-950/30 p-1 shadow-soft3d">
-              <button id="rankImpactBtn" class="px-3 py-1.5 text-sm rounded-lg transition">Impacto ($)</button>
-              <button id="rankSensBtn" class="px-3 py-1.5 text-sm rounded-lg transition">Sensibilidad (%)</button>
+            <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/70 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700">
+              ▾
+            </span>
+          </summary>
+
+          <div class="px-5 pb-5">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+              <div class="text-xs text-slate-500 dark:text-slate-400">
+                Tip: toca una sucursal para filtrar y hacer drill-down.
+              </div>
+              <div class="inline-flex rounded-xl ring-1 ring-slate-200 dark:ring-slate-700 bg-white/70 dark:bg-slate-950/30 p-1 shadow-soft3d">
+                <button id="rankImpactBtn" class="px-3 py-1.5 text-sm rounded-lg transition">Impacto ($)</button>
+                <button id="rankSensBtn" class="px-3 py-1.5 text-sm rounded-lg transition">Sensibilidad (%)</button>
+              </div>
             </div>
+
+            <div class="mt-4 space-y-3" id="rankingList"></div>
+          </div>
+        </details>
+      </section>
+
+      <!-- Charts & Tables -->
+      <section class="mt-6 grid grid-cols-1 xl:grid-cols-12 gap-4">
+        <!-- Tendencia -->
+        <div class="surface surface-hover xl:col-span-8 p-4 sm:p-5" data-tilt>
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold">Tendencia mensual</h2>
+            <span class="text-xs text-slate-600 dark:text-slate-300">Highlight: Mayo</span>
           </div>
 
-          <div class="mt-4 space-y-3" id="rankingList"></div>
-        </div>
-      </details>
-    </section>
-
-    <!-- Charts & Tables (ordered, stable heights) -->
-    <section class="mt-6 grid grid-cols-1 xl:grid-cols-12 gap-4">
-      <!-- Tendencia -->
-      <div class="xl:col-span-8 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 sm:p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
-        <div class="flex items-center justify-between">
-          <h2 class="font-semibold">Tendencia mensual</h2>
-          <span class="text-xs text-slate-600 dark:text-slate-300">Highlight: Mayo</span>
-        </div>
-
-        <div class="mt-3 relative min-h-[220px] sm:min-h-[260px]">
-          <canvas id="chartMensual" class="!w-full !h-[220px] sm:!h-[260px]"></canvas>
-        </div>
-
-        <div class="mt-4 overflow-x-auto rounded-xl ring-1 ring-slate-200/60 dark:ring-slate-700/60">
-          <table class="w-full text-sm">
-            <thead class="text-xs text-slate-600 dark:text-slate-300 sticky top-0 bg-white/90 dark:bg-slate-950/40 backdrop-blur">
-              <tr>
-                <th class="text-left py-2 px-3">Mes</th>
-                <th class="text-right py-2 px-3">Venta 2025</th>
-                <th class="text-right py-2 px-3">Dif. $</th>
-                <th class="text-right py-2 px-3">Uplift %</th>
-              </tr>
-            </thead>
-            <tbody id="tblMensual" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Canal -->
-      <div class="xl:col-span-4 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 sm:p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
-        <div class="flex items-center justify-between">
-          <h2 class="font-semibold">Motor del uplift</h2>
-          <span class="text-xs text-slate-600 dark:text-slate-300">UBER vs SALON</span>
-        </div>
-
-        <div class="mt-3 relative min-h-[220px] sm:min-h-[260px]">
-          <canvas id="chartCanal" class="!w-full !h-[220px] sm:!h-[260px]"></canvas>
-        </div>
-
-        <div class="mt-4 overflow-x-auto rounded-xl ring-1 ring-slate-200/60 dark:ring-slate-700/60">
-          <table class="w-full text-sm">
-            <thead class="text-xs text-slate-600 dark:text-slate-300 sticky top-0 bg-white/90 dark:bg-slate-950/40 backdrop-blur">
-              <tr>
-                <th class="text-left py-2 px-3">Canal</th>
-                <th class="text-right py-2 px-3">Venta 2025</th>
-                <th class="text-right py-2 px-3">Dif. $</th>
-                <th class="text-right py-2 px-3">Uplift %</th>
-                <th class="text-right py-2 px-3">% uplift</th>
-              </tr>
-            </thead>
-            <tbody id="tblCanal" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Scatter -->
-      <div class="xl:col-span-5 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 sm:p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
-        <div class="flex items-center justify-between">
-          <h2 class="font-semibold">Sensibilidad (proxy)</h2>
-          <span class="text-xs text-slate-600 dark:text-slate-300">Mix UBER vs uplift%</span>
-        </div>
-
-        <div class="mt-3 relative min-h-[260px] sm:min-h-[300px]">
-          <canvas id="chartScatter" class="!w-full !h-[260px] sm:!h-[300px]"></canvas>
-        </div>
-
-        <div class="mt-3 text-xs text-slate-600 dark:text-slate-300">
-          <div><span class="font-medium">Corr (Mix vs Uplift):</span> <span id="corrTxt">—</span></div>
-          <div class="mt-1">Líneas: medianas (cuadrantes).</div>
-        </div>
-      </div>
-
-      <!-- Ranking table -->
-      <div class="xl:col-span-7 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 sm:p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
-        <div class="flex items-center justify-between">
-          <h2 class="font-semibold">Ranking por sucursal</h2>
-          <span class="text-xs text-slate-600 dark:text-slate-300">Impacto $ + sensibilidad %</span>
-        </div>
-
-        <div class="mt-4 overflow-x-auto rounded-xl ring-1 ring-slate-200/60 dark:ring-slate-700/60">
-          <table class="w-full text-sm">
-            <thead class="text-xs text-slate-600 dark:text-slate-300 sticky top-0 bg-white/90 dark:bg-slate-950/40 backdrop-blur">
-              <tr>
-                <th class="text-left py-2 px-3 cursor-pointer" data-sort="sucursal">Sucursal</th>
-                <th class="text-right py-2 px-3 cursor-pointer" data-sort="venta_2025">Venta 2025</th>
-                <th class="text-right py-2 px-3 cursor-pointer" data-sort="diferencial">Dif. $</th>
-                <th class="text-right py-2 px-3 cursor-pointer" data-sort="uplift_pct">Uplift %</th>
-                <th class="text-right py-2 px-3 cursor-pointer" data-sort="mix_uber_2025">Mix UBER</th>
-              </tr>
-            </thead>
-            <tbody id="tblSucursal" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Drilldown: accordion on mobile -->
-      <details id="accDrill"
-        data-responsive
-        class="xl:col-span-12 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition">
-        <summary class="list-none cursor-pointer select-none px-5 py-4 flex items-center justify-between gap-3">
-          <div class="min-w-0">
-            <div class="font-semibold">Drill-down · Top 5 por mes y canal</div>
-            <div class="text-xs text-slate-600 dark:text-slate-300">Toca para abrir/cerrar (móvil)</div>
+          <div class="mt-3 relative min-h-[220px] sm:min-h-[260px]">
+            <canvas id="chartMensual" class="!w-full !h-[220px] sm:!h-[260px]"></canvas>
           </div>
-          <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/70 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700">
-            ▾
-          </span>
-        </summary>
 
-        <div class="px-5 pb-5">
-          <div class="overflow-x-auto rounded-xl ring-1 ring-slate-200/60 dark:ring-slate-700/60">
+          <div class="table-wrap">
             <table class="w-full text-sm">
-              <thead class="text-xs text-slate-600 dark:text-slate-300 sticky top-0 bg-white/90 dark:bg-slate-950/40 backdrop-blur">
+              <thead class="thead text-slate-600 dark:text-slate-300">
                 <tr>
                   <th class="text-left py-2 px-3">Mes</th>
-                  <th class="text-left py-2 px-3">Canal</th>
-                  <th class="text-left py-2 px-3">Sucursal</th>
                   <th class="text-right py-2 px-3">Venta 2025</th>
                   <th class="text-right py-2 px-3">Dif. $</th>
                   <th class="text-right py-2 px-3">Uplift %</th>
                 </tr>
               </thead>
-              <tbody id="tblDrill" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
+              <tbody id="tblMensual" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
             </table>
           </div>
-
-          <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">
-            READ_ONLY_MODE activado · Consumo exclusivo de <code>/exports/derived_jan_may_2025_2026.json</code>.
-          </p>
         </div>
-      </details>
-    </section>
+
+        <!-- Canal -->
+        <div class="surface surface-hover xl:col-span-4 p-4 sm:p-5" data-tilt>
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold">Motor del uplift</h2>
+            <span class="text-xs text-slate-600 dark:text-slate-300">UBER vs SALON</span>
+          </div>
+
+          <div class="mt-3 relative min-h-[220px] sm:min-h-[260px]">
+            <canvas id="chartCanal" class="!w-full !h-[220px] sm:!h-[260px]"></canvas>
+          </div>
+
+          <div class="table-wrap">
+            <table class="w-full text-sm">
+              <thead class="thead text-slate-600 dark:text-slate-300">
+                <tr>
+                  <th class="text-left py-2 px-3">Canal</th>
+                  <th class="text-right py-2 px-3">Venta 2025</th>
+                  <th class="text-right py-2 px-3">Dif. $</th>
+                  <th class="text-right py-2 px-3">Uplift %</th>
+                  <th class="text-right py-2 px-3">% uplift</th>
+                </tr>
+              </thead>
+              <tbody id="tblCanal" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Scatter -->
+        <div class="surface surface-hover xl:col-span-5 p-4 sm:p-5" data-tilt>
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold">Sensibilidad (proxy)</h2>
+            <span class="text-xs text-slate-600 dark:text-slate-300">Mix UBER vs uplift%</span>
+          </div>
+
+          <div class="mt-3 relative min-h-[260px] sm:min-h-[300px]">
+            <canvas id="chartScatter" class="!w-full !h-[260px] sm:!h-[300px]"></canvas>
+          </div>
+
+          <div class="mt-3 text-xs text-slate-600 dark:text-slate-300">
+            <div><span class="font-medium">Corr (Mix vs Uplift):</span> <span id="corrTxt">—</span></div>
+            <div class="mt-1">Líneas: medianas (cuadrantes).</div>
+          </div>
+        </div>
+
+        <!-- Ranking table -->
+        <div class="surface surface-hover xl:col-span-7 p-4 sm:p-5" data-tilt>
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold">Ranking por sucursal</h2>
+            <span class="text-xs text-slate-600 dark:text-slate-300">Impacto $ + sensibilidad %</span>
+          </div>
+
+          <div class="table-wrap">
+            <table class="w-full text-sm">
+              <thead class="thead text-slate-600 dark:text-slate-300">
+                <tr>
+                  <th class="text-left py-2 px-3 cursor-pointer select-none" data-sort="sucursal">Sucursal</th>
+                  <th class="text-right py-2 px-3 cursor-pointer select-none" data-sort="venta_2025">Venta 2025</th>
+                  <th class="text-right py-2 px-3 cursor-pointer select-none" data-sort="diferencial">Dif. $</th>
+                  <th class="text-right py-2 px-3 cursor-pointer select-none" data-sort="uplift_pct">Uplift %</th>
+                  <th class="text-right py-2 px-3 cursor-pointer select-none" data-sort="mix_uber_2025">Mix UBER</th>
+                </tr>
+              </thead>
+              <tbody id="tblSucursal" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Drilldown -->
+        <details id="accDrill" data-responsive class="surface surface-hover xl:col-span-12" data-tilt>
+          <summary class="list-none cursor-pointer select-none px-5 py-4 flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <div class="font-semibold">Drill-down · Top 5 por mes y canal</div>
+              <div class="text-xs text-slate-600 dark:text-slate-300">Toca para abrir/cerrar (móvil)</div>
+            </div>
+            <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/70 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700">
+              ▾
+            </span>
+          </summary>
+
+          <div class="px-5 pb-5">
+            <div class="table-wrap">
+              <table class="w-full text-sm">
+                <thead class="thead text-slate-600 dark:text-slate-300">
+                  <tr>
+                    <th class="text-left py-2 px-3">Mes</th>
+                    <th class="text-left py-2 px-3">Canal</th>
+                    <th class="text-left py-2 px-3">Sucursal</th>
+                    <th class="text-right py-2 px-3">Venta 2025</th>
+                    <th class="text-right py-2 px-3">Dif. $</th>
+                    <th class="text-right py-2 px-3">Uplift %</th>
+                  </tr>
+                </thead>
+                <tbody id="tblDrill" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
+              </table>
+            </div>
+
+            <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">
+              READ_ONLY_MODE activado · Consumo exclusivo de <code>/exports/derived_jan_may_2025_2026.json</code>.
+            </p>
+          </div>
+        </details>
+      </section>
+    </main>
 
     <footer class="mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
       <div>© <span id="footerYear"></span> Grupo Araico</div>
@@ -327,14 +419,7 @@
     </footer>
   </div>
 
-  <style>
-    summary::-webkit-details-marker { display:none; }
-    tbody.zebra tr:nth-child(odd) { background: rgba(2,6,23,0.03); }
-    html.dark tbody.zebra tr:nth-child(odd) { background: rgba(255,255,255,0.04); }
-    tbody.zebra tr:hover { filter: brightness(0.98); }
-    html.dark tbody.zebra tr:hover { filter: brightness(1.05); }
-  </style>
-
-  <script src="./app.js"></script>
+  <!-- App -->
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
