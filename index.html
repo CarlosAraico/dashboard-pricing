@@ -54,73 +54,91 @@
         </div>
       </div>
 
-      <!-- Controls + KPI -->
-      <section class="bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 sm:p-5">
-        <div class="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
-          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2">
-            <div class="flex flex-col">
-              <label class="text-xs font-medium text-slate-600 dark:text-slate-300">Sucursal</label>
-              <select id="fSucursal"
-                class="mt-1 rounded-xl border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-950/30 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
-              </select>
+      <!-- Sticky: Controls + KPIs (accordion on mobile, open on tablet/desktop) -->
+      <details id="accControls"
+        data-responsive
+        class="sticky top-2 z-40 sm:static bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d">
+        <summary
+          class="list-none cursor-pointer select-none px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <div class="font-semibold">Filtros & KPIs</div>
+            <div class="text-xs text-slate-600 dark:text-slate-300">Toca para abrir/cerrar (móvil)</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline text-xs text-slate-500 dark:text-slate-400">Siempre visible en desktop</span>
+            <span class="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-white/70 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700">
+              ▾
+            </span>
+          </div>
+        </summary>
+
+        <div class="px-4 sm:px-5 pb-4 sm:pb-5">
+          <div class="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2">
+              <div class="flex flex-col">
+                <label class="text-xs font-medium text-slate-600 dark:text-slate-300">Sucursal</label>
+                <select id="fSucursal"
+                  class="mt-1 rounded-xl border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-950/30 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
+                </select>
+              </div>
+
+              <div class="flex flex-col">
+                <label class="text-xs font-medium text-slate-600 dark:text-slate-300">Mes</label>
+                <select id="fMes"
+                  class="mt-1 rounded-xl border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-950/30 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
+                </select>
+              </div>
+
+              <div class="flex flex-col">
+                <label class="text-xs font-medium text-slate-600 dark:text-slate-300">Canal</label>
+                <select id="fCanal"
+                  class="mt-1 rounded-xl border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-950/30 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
+                </select>
+              </div>
+
+              <div class="flex flex-col">
+                <label class="text-xs font-medium text-slate-600 dark:text-slate-300">Buscar sucursal</label>
+                <input id="fSearch" type="text" placeholder="Ej. POLANCO, TLALPAN..."
+                  class="mt-1 rounded-xl border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-950/30 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600" />
+              </div>
             </div>
 
-            <div class="flex flex-col">
-              <label class="text-xs font-medium text-slate-600 dark:text-slate-300">Mes</label>
-              <select id="fMes"
-                class="mt-1 rounded-xl border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-950/30 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
-              </select>
-            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <button id="toggleView"
+                class="rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
+                Ver: $
+              </button>
 
-            <div class="flex flex-col">
-              <label class="text-xs font-medium text-slate-600 dark:text-slate-300">Canal</label>
-              <select id="fCanal"
-                class="mt-1 rounded-xl border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-950/30 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
-              </select>
-            </div>
+              <button id="btnReset"
+                class="rounded-xl bg-white/80 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
+                Reset
+              </button>
 
-            <div class="flex flex-col">
-              <label class="text-xs font-medium text-slate-600 dark:text-slate-300">Buscar sucursal</label>
-              <input id="fSearch" type="text" placeholder="Ej. POLANCO, TLALPAN..."
-                class="mt-1 rounded-xl border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-950/30 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600" />
+              <button id="btnExportJSON"
+                class="rounded-xl bg-white/80 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
+                Export JSON
+              </button>
+
+              <button id="btnExportCSV"
+                class="rounded-xl bg-white/80 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
+                Export CSV
+              </button>
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-2">
-            <button id="toggleView"
-              class="rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
-              Ver: $
-            </button>
-
-            <button id="btnReset"
-              class="rounded-xl bg-white/80 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
-              Reset
-            </button>
-
-            <button id="btnExportJSON"
-              class="rounded-xl bg-white/80 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
-              Export JSON
-            </button>
-
-            <button id="btnExportCSV"
-              class="rounded-xl bg-white/80 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600">
-              Export CSV
-            </button>
+          <div class="mt-3 flex flex-wrap items-center gap-2">
+            <div class="text-xs text-slate-600 dark:text-slate-300">Filtros activos:</div>
+            <div id="activeChips" class="flex flex-wrap gap-2"></div>
           </div>
-        </div>
 
-        <div class="mt-3 flex flex-wrap items-center gap-2">
-          <div class="text-xs text-slate-600 dark:text-slate-300">Filtros activos:</div>
-          <div id="activeChips" class="flex flex-wrap gap-2"></div>
+          <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" id="kpiCards"></div>
         </div>
-
-        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" id="kpiCards"></div>
-      </section>
+      </details>
     </header>
 
     <!-- Executive strip -->
     <section class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-4">
-      <div class="order-1 lg:order-1 lg:col-span-6 bg-rose-50/70 dark:bg-rose-950/25 backdrop-blur ring-1 ring-rose-200/70 dark:ring-rose-800/40 rounded-2xl shadow-soft3d p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
+      <div class="lg:col-span-6 bg-rose-50/70 dark:bg-rose-950/25 backdrop-blur ring-1 ring-rose-200/70 dark:ring-rose-800/40 rounded-2xl shadow-soft3d p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
         <div class="flex items-center gap-2">
           <span class="text-rose-700 dark:text-rose-200">🚩</span>
           <h2 class="font-semibold text-rose-800 dark:text-rose-100">Banderas Rojas (Alertas)</h2>
@@ -131,7 +149,7 @@
         </div>
       </div>
 
-      <div class="order-2 lg:order-2 lg:col-span-6 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
+      <div class="lg:col-span-6 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
         <div class="flex items-center gap-2">
           <span class="text-amber-600 dark:text-amber-200">⚡</span>
           <h2 class="font-semibold">Plan de Acción Inmediato</h2>
@@ -139,28 +157,41 @@
         <div id="actionPlanList" class="mt-4 space-y-3"></div>
       </div>
 
-      <div class="order-3 lg:order-3 lg:col-span-12 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-          <div>
-            <h2 class="font-semibold">Ranking de Sucursales</h2>
-            <p class="text-sm text-slate-600 dark:text-slate-300">Prioridad de acción · Top 5</p>
-            <p class="text-xs text-slate-500 dark:text-slate-400" id="concentrationTxt">—</p>
+      <!-- Ranking: accordion on mobile -->
+      <details id="accRanking"
+        data-responsive
+        class="lg:col-span-12 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition">
+        <summary class="list-none cursor-pointer select-none px-5 py-4 flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <div class="font-semibold">Ranking de Sucursales</div>
+            <div class="text-sm text-slate-600 dark:text-slate-300">Prioridad de acción · Top 5</div>
+            <div class="text-xs text-slate-500 dark:text-slate-400" id="concentrationTxt">—</div>
+          </div>
+          <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/70 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700">
+            ▾
+          </span>
+        </summary>
+
+        <div class="px-5 pb-5">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="text-xs text-slate-500 dark:text-slate-400">
+              Tip: en móvil, colapsa para ver gráficas más rápido.
+            </div>
+            <div class="inline-flex rounded-xl ring-1 ring-slate-200 dark:ring-slate-700 bg-white/70 dark:bg-slate-950/30 p-1 shadow-soft3d">
+              <button id="rankImpactBtn" class="px-3 py-1.5 text-sm rounded-lg transition">Impacto ($)</button>
+              <button id="rankSensBtn" class="px-3 py-1.5 text-sm rounded-lg transition">Sensibilidad (%)</button>
+            </div>
           </div>
 
-          <div class="inline-flex rounded-xl ring-1 ring-slate-200 dark:ring-slate-700 bg-white/70 dark:bg-slate-950/30 p-1 shadow-soft3d">
-            <button id="rankImpactBtn" class="px-3 py-1.5 text-sm rounded-lg transition">Impacto ($)</button>
-            <button id="rankSensBtn" class="px-3 py-1.5 text-sm rounded-lg transition">Sensibilidad (%)</button>
-          </div>
+          <div class="mt-4 space-y-3" id="rankingList"></div>
         </div>
-
-        <div class="mt-4 space-y-3" id="rankingList"></div>
-      </div>
+      </details>
     </section>
 
-    <!-- Charts & Tables (ordered for exec narrative) -->
+    <!-- Charts & Tables (ordered, stable heights) -->
     <section class="mt-6 grid grid-cols-1 xl:grid-cols-12 gap-4">
-      <!-- Tendencia (primary) -->
-      <div class="order-1 xl:order-1 xl:col-span-8 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 sm:p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
+      <!-- Tendencia -->
+      <div class="xl:col-span-8 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 sm:p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
         <div class="flex items-center justify-between">
           <h2 class="font-semibold">Tendencia mensual</h2>
           <span class="text-xs text-slate-600 dark:text-slate-300">Highlight: Mayo</span>
@@ -185,8 +216,8 @@
         </div>
       </div>
 
-      <!-- Motor uplift (secondary) -->
-      <div class="order-2 xl:order-2 xl:col-span-4 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 sm:p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
+      <!-- Canal -->
+      <div class="xl:col-span-4 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 sm:p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
         <div class="flex items-center justify-between">
           <h2 class="font-semibold">Motor del uplift</h2>
           <span class="text-xs text-slate-600 dark:text-slate-300">UBER vs SALON</span>
@@ -212,8 +243,25 @@
         </div>
       </div>
 
-      <!-- Ranking table (detail) -->
-      <div class="order-3 xl:order-4 xl:col-span-7 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 sm:p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
+      <!-- Scatter -->
+      <div class="xl:col-span-5 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 sm:p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
+        <div class="flex items-center justify-between">
+          <h2 class="font-semibold">Sensibilidad (proxy)</h2>
+          <span class="text-xs text-slate-600 dark:text-slate-300">Mix UBER vs uplift%</span>
+        </div>
+
+        <div class="mt-3 relative min-h-[260px] sm:min-h-[300px]">
+          <canvas id="chartScatter" class="!w-full !h-[260px] sm:!h-[300px]"></canvas>
+        </div>
+
+        <div class="mt-3 text-xs text-slate-600 dark:text-slate-300">
+          <div><span class="font-medium">Corr (Mix vs Uplift):</span> <span id="corrTxt">—</span></div>
+          <div class="mt-1">Líneas: medianas (cuadrantes).</div>
+        </div>
+      </div>
+
+      <!-- Ranking table -->
+      <div class="xl:col-span-7 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 sm:p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
         <div class="flex items-center justify-between">
           <h2 class="font-semibold">Ranking por sucursal</h2>
           <span class="text-xs text-slate-600 dark:text-slate-300">Impacto $ + sensibilidad %</span>
@@ -235,50 +283,42 @@
         </div>
       </div>
 
-      <!-- Scatter (insight) -->
-      <div class="order-4 xl:order-3 xl:col-span-5 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 sm:p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
-        <div class="flex items-center justify-between">
-          <h2 class="font-semibold">Sensibilidad (proxy)</h2>
-          <span class="text-xs text-slate-600 dark:text-slate-300">Mix UBER vs uplift%</span>
-        </div>
+      <!-- Drilldown: accordion on mobile -->
+      <details id="accDrill"
+        data-responsive
+        class="xl:col-span-12 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition">
+        <summary class="list-none cursor-pointer select-none px-5 py-4 flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <div class="font-semibold">Drill-down · Top 5 por mes y canal</div>
+            <div class="text-xs text-slate-600 dark:text-slate-300">Toca para abrir/cerrar (móvil)</div>
+          </div>
+          <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/70 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700">
+            ▾
+          </span>
+        </summary>
 
-        <div class="mt-3 relative min-h-[260px] sm:min-h-[300px]">
-          <canvas id="chartScatter" class="!w-full !h-[260px] sm:!h-[300px]"></canvas>
-        </div>
+        <div class="px-5 pb-5">
+          <div class="overflow-x-auto rounded-xl ring-1 ring-slate-200/60 dark:ring-slate-700/60">
+            <table class="w-full text-sm">
+              <thead class="text-xs text-slate-600 dark:text-slate-300 sticky top-0 bg-white/90 dark:bg-slate-950/40 backdrop-blur">
+                <tr>
+                  <th class="text-left py-2 px-3">Mes</th>
+                  <th class="text-left py-2 px-3">Canal</th>
+                  <th class="text-left py-2 px-3">Sucursal</th>
+                  <th class="text-right py-2 px-3">Venta 2025</th>
+                  <th class="text-right py-2 px-3">Dif. $</th>
+                  <th class="text-right py-2 px-3">Uplift %</th>
+                </tr>
+              </thead>
+              <tbody id="tblDrill" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
+            </table>
+          </div>
 
-        <div class="mt-3 text-xs text-slate-600 dark:text-slate-300">
-          <div><span class="font-medium">Corr (Mix vs Uplift):</span> <span id="corrTxt">—</span></div>
-          <div class="mt-1">Líneas: medianas (cuadrantes).</div>
+          <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">
+            READ_ONLY_MODE activado · Consumo exclusivo de <code>/exports/derived_jan_may_2025_2026.json</code>.
+          </p>
         </div>
-      </div>
-
-      <!-- Drilldown (full width) -->
-      <div class="order-5 xl:order-5 xl:col-span-12 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 sm:p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
-        <div class="flex items-center justify-between">
-          <h2 class="font-semibold">Drill-down · Top 5 por mes y canal</h2>
-          <span class="text-xs text-slate-600 dark:text-slate-300">Ordenado por diferencial $</span>
-        </div>
-
-        <div class="mt-4 overflow-x-auto rounded-xl ring-1 ring-slate-200/60 dark:ring-slate-700/60">
-          <table class="w-full text-sm">
-            <thead class="text-xs text-slate-600 dark:text-slate-300 sticky top-0 bg-white/90 dark:bg-slate-950/40 backdrop-blur">
-              <tr>
-                <th class="text-left py-2 px-3">Mes</th>
-                <th class="text-left py-2 px-3">Canal</th>
-                <th class="text-left py-2 px-3">Sucursal</th>
-                <th class="text-right py-2 px-3">Venta 2025</th>
-                <th class="text-right py-2 px-3">Dif. $</th>
-                <th class="text-right py-2 px-3">Uplift %</th>
-              </tr>
-            </thead>
-            <tbody id="tblDrill" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
-          </table>
-        </div>
-
-        <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">
-          READ_ONLY_MODE activado · Consumo exclusivo de <code>/exports/derived_jan_may_2025_2026.json</code>.
-        </p>
-      </div>
+      </details>
     </section>
 
     <footer class="mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
@@ -288,6 +328,7 @@
   </div>
 
   <style>
+    summary::-webkit-details-marker { display:none; }
     tbody.zebra tr:nth-child(odd) { background: rgba(2,6,23,0.03); }
     html.dark tbody.zebra tr:nth-child(odd) { background: rgba(255,255,255,0.04); }
     tbody.zebra tr:hover { filter: brightness(0.98); }
@@ -297,9 +338,3 @@
   <script src="./app.js"></script>
 </body>
 </html>
-
-
-<!-- /app.js
-     NO CAMBIA por diseño responsive. Mantén tu app.js actual tal cual.
-     (Si ya tienes las secciones redFlags/actionPlan/ranking, esto solo reordena y embellece el layout.)
--->

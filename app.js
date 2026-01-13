@@ -1,31 +1,25 @@
 // /app.js
-/**
- * Dashboard read-only (solo lectura) para pricing uplift (ejecutivo).
- * Fuente: /exports/derived_jan_may_2025_2026.json (vistas derivadas)
- */
-
 const READ_ONLY_MODE = true;
 const DATA_URL = "./exports/derived_jan_may_2025_2026.json";
 
-// Thresholds (ajustables)
-const THRESH_UPLIFT_RED = 8.0; // uplift% alto
-const THRESH_MIX_UBER_ALTO = 40.0; // mix UBER alto
-const THRESH_DARK_KITCHEN = 55.0; // mix UBER muy alto
+const THRESH_UPLIFT_RED = 8.0;
+const THRESH_MIX_UBER_ALTO = 40.0;
+const THRESH_DARK_KITCHEN = 55.0;
 
 const state = {
   data: null,
-  viewMode: "money", // money | pct
-  rankMode: "impact", // impact | sensitivity
+  viewMode: "money",
+  rankMode: "impact",
   filters: { sucursal: "Todas", mes: "Todos", canal: "Todos", search: "" },
   sort: { key: "diferencial", dir: "desc" },
   charts: { canal: null, mensual: null, scatter: null },
 };
 
+function el(id) { return document.getElementById(id); }
+
 function assertReadOnlyFetch(options = {}) {
   const method = (options.method || "GET").toUpperCase();
-  if (READ_ONLY_MODE && method !== "GET") {
-    throw new Error(`READ_ONLY_MODE: método bloqueado (${method}).`);
-  }
+  if (READ_ONLY_MODE && method !== "GET") throw new Error(`READ_ONLY_MODE: método bloqueado (${method}).`);
 }
 
 async function fetchJSON(url, options = {}) {
@@ -37,27 +31,25 @@ async function fetchJSON(url, options = {}) {
 
 function safeParseGeneratedAt(value) {
   if (!value) return null;
-  let v = String(value).replace(/(\.\d{3})\d+/, "$1").replace(/\+00:00$/, "Z");
+  const v = String(value).replace(/(\.\d{3})\d+/, "$1").replace(/\+00:00$/, "Z");
   const d = new Date(v);
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
+function uniq(arr) { return [...new Set(arr)]; }
+
 function formatMoney(n) {
-  const v = Number(n || 0);
-  return v.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 });
+  return Number(n || 0).toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 });
 }
+function formatPct(p) { return `${Number(p || 0).toFixed(1)}%`; }
 
-function formatPct(p) {
-  const v = Number(p || 0);
-  return `${v.toFixed(1)}%`;
-}
-
-function uniq(arr) {
-  return [...new Set(arr)];
-}
-
-function el(id) {
-  return document.getElementById(id);
+function toCSV(rows) {
+  const cols = Object.keys(rows[0] || {});
+  const esc = (v) => {
+    const s = String(v ?? "");
+    return /[",\n]/.test(s) ? `"${s.replaceAll('"', '""')}"` : s;
+  };
+  return [cols.join(","), ...rows.map(r => cols.map(c => esc(r[c])).join(","))].join("\n");
 }
 
 function downloadBlob(filename, blob) {
@@ -70,22 +62,9 @@ function downloadBlob(filename, blob) {
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
-function toCSV(rows) {
-  const cols = Object.keys(rows[0] || {});
-  const esc = (v) => {
-    const s = String(v ?? "");
-    if (/[",\n]/.test(s)) return `"${s.replaceAll('"', '""')}"`;
-    return s;
-  };
-  const lines = [cols.join(",")];
-  for (const r of rows) lines.push(cols.map((c) => esc(r[c])).join(","));
-  return lines.join("\n");
-}
-
 function applyFilters(rows) {
   const { sucursal, mes, canal, search } = state.filters;
   const q = (search || "").trim().toLowerCase();
-
   return rows.filter((r) => {
     if (sucursal !== "Todas" && r.sucursal !== sucursal) return false;
     if (mes !== "Todos" && r.mes !== mes) return false;
@@ -96,7 +75,7 @@ function applyFilters(rows) {
 }
 
 function summarize(rows) {
-  const sum = (key) => rows.reduce((a, r) => a + Number(r[key] || 0), 0);
+  const sum = (k) => rows.reduce((a, r) => a + Number(r[k] || 0), 0);
   const venta_2025 = sum("venta_2025");
   const venta_2026 = sum("venta_2026");
   const diferencial = sum("diferencial");
@@ -133,6 +112,46 @@ function badgeChip(text, tone = "slate") {
   return `<span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ring-1 ${cls}">${text}</span>`;
 }
 
+function zebraify(tbodyId) {
+  const tbody = el(tbodyId);
+  if (tbody) tbody.classList.add("zebra");
+}
+
+/* ===== Responsive accordions ===== */
+function resizeChartsSoon() {
+  requestAnimationFrame(() => {
+    Object.values(state.charts).forEach((c) => {
+      try { c?.resize?.(); } catch {}
+    });
+  });
+}
+
+function setupResponsiveDetails() {
+  const mq = window.matchMedia("(min-width: 640px)");
+  const details = Array.from(document.querySelectorAll("details[data-responsive]"));
+
+  const apply = () => {
+    const isDesktop = mq.matches;
+    details.forEach((d) => {
+      if (isDesktop) d.open = true;
+      else if (!d.dataset.userSet) d.open = false;
+    });
+    resizeChartsSoon();
+  };
+
+  details.forEach((d) => {
+    d.addEventListener("toggle", () => {
+      d.dataset.userSet = "1";
+      resizeChartsSoon();
+    });
+  });
+
+  mq.addEventListener?.("change", apply);
+  window.addEventListener("resize", apply);
+  apply();
+}
+
+/* ===== Existing dashboard rendering ===== */
 function buildKPIs(kpi) {
   const cards = [
     { label: "Venta 2025", value: formatMoney(kpi.venta_2025), hint: "Base (precio actual)" },
@@ -185,11 +204,6 @@ function renderActiveChips() {
   }
 }
 
-function zebraify(tbodyId) {
-  const tbody = el(tbodyId);
-  if (tbody) tbody.classList.add("zebra");
-}
-
 function renderCanal(rows) {
   const m = groupBy(rows, "canal");
   const channels = [...m.keys()].sort();
@@ -203,15 +217,14 @@ function renderCanal(rows) {
     const contrib = total.diferencial > 0 ? (a.diferencial / total.diferencial) * 100 : 0;
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td class="py-2 font-medium">${a.canal}</td>
-      <td class="py-2 text-right tabular-nums">${formatMoney(a.venta_2025)}</td>
-      <td class="py-2 text-right tabular-nums">${formatMoney(a.diferencial)}</td>
-      <td class="py-2 text-right tabular-nums"><span class="${badgePct(a.uplift_pct)}">${formatPct(a.uplift_pct)}</span></td>
-      <td class="py-2 text-right tabular-nums">${formatPct(contrib)}</td>
+      <td class="py-2 px-3 font-medium">${a.canal}</td>
+      <td class="py-2 px-3 text-right tabular-nums">${formatMoney(a.venta_2025)}</td>
+      <td class="py-2 px-3 text-right tabular-nums">${formatMoney(a.diferencial)}</td>
+      <td class="py-2 px-3 text-right tabular-nums"><span class="${badgePct(a.uplift_pct)}">${formatPct(a.uplift_pct)}</span></td>
+      <td class="py-2 px-3 text-right tabular-nums">${formatPct(contrib)}</td>
     `;
     tbody.appendChild(tr);
   }
-
   zebraify("tblCanal");
 
   const labels = agg.map((a) => a.canal);
@@ -221,11 +234,7 @@ function renderCanal(rows) {
   state.charts.canal = new Chart(el("chartCanal"), {
     type: "doughnut",
     data: { labels, datasets: [{ data: values }] },
-    options: {
-      responsive: true,
-      plugins: { legend: { position: "bottom", labels: { boxWidth: 12 } } },
-      cutout: "68%",
-    },
+    options: { responsive: true, plugins: { legend: { position: "bottom", labels: { boxWidth: 12 } } }, cutout: "68%" },
   });
 }
 
@@ -243,14 +252,13 @@ function renderMensual(rows) {
     const tr = document.createElement("tr");
     tr.className = isMay ? "bg-slate-900/5 dark:bg-white/5" : "";
     tr.innerHTML = `
-      <td class="py-2 font-medium">${a.mes}${isMay ? " · ★" : ""}</td>
-      <td class="py-2 text-right tabular-nums">${formatMoney(a.venta_2025)}</td>
-      <td class="py-2 text-right tabular-nums">${formatMoney(a.diferencial)}</td>
-      <td class="py-2 text-right tabular-nums"><span class="${badgePct(a.uplift_pct)}">${formatPct(a.uplift_pct)}</span></td>
+      <td class="py-2 px-3 font-medium">${a.mes}${isMay ? " · ★" : ""}</td>
+      <td class="py-2 px-3 text-right tabular-nums">${formatMoney(a.venta_2025)}</td>
+      <td class="py-2 px-3 text-right tabular-nums">${formatMoney(a.diferencial)}</td>
+      <td class="py-2 px-3 text-right tabular-nums"><span class="${badgePct(a.uplift_pct)}">${formatPct(a.uplift_pct)}</span></td>
     `;
     tbody.appendChild(tr);
   }
-
   zebraify("tblMensual");
 
   const labels = agg.map((a) => a.mes);
@@ -287,22 +295,13 @@ function buildBranchAgg(rows) {
     const mixUber = s.venta_2025 > 0 ? (uberVenta / s.venta_2025) * 100 : 0;
     const contribUplift = total.diferencial > 0 ? (s.diferencial / total.diferencial) * 100 : 0;
 
-    // Anomalía: SALON uplift% > UBER uplift% (por sucursal) cuando existan ambos
     const rsUber = rs.filter((r) => r.canal === "UBER");
     const rsSalon = rs.filter((r) => r.canal === "SALON");
     const uUber = rsUber.length ? summarize(rsUber).uplift_pct : null;
     const uSalon = rsSalon.length ? summarize(rsSalon).uplift_pct : null;
     const salonBeatsUber = (uUber !== null && uSalon !== null) ? (uSalon > uUber) : false;
 
-    return {
-      sucursal,
-      venta_2025: s.venta_2025,
-      diferencial: s.diferencial,
-      uplift_pct: s.uplift_pct,
-      mix_uber_2025: mixUber,
-      contrib_uplift_pct: contribUplift,
-      salon_beats_uber: salonBeatsUber,
-    };
+    return { sucursal, venta_2025: s.venta_2025, diferencial: s.diferencial, uplift_pct: s.uplift_pct, mix_uber_2025: mixUber, contrib_uplift_pct: contribUplift, salon_beats_uber: salonBeatsUber };
   });
 
   return { agg, total };
@@ -320,8 +319,7 @@ function renderSucursal(rows) {
 
   const { key, dir } = state.sort;
   agg.sort((a, b) => {
-    const va = a[key];
-    const vb = b[key];
+    const va = a[key], vb = b[key];
     const cmp = typeof va === "string" ? va.localeCompare(vb) : va - vb;
     return dir === "asc" ? cmp : -cmp;
   });
@@ -330,21 +328,16 @@ function renderSucursal(rows) {
   tbody.innerHTML = "";
 
   agg.forEach((a, idx) => {
-    const rank = idx + 1;
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td class="py-2 font-medium">
-        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs mr-2 ring-1 ring-slate-200 dark:ring-slate-700 bg-white/70 dark:bg-slate-950/30">${rank}</span>
-        ${a.sucursal}
-      </td>
-      <td class="py-2 text-right tabular-nums">${formatMoney(a.venta_2025)}</td>
-      <td class="py-2 text-right tabular-nums">${formatMoney(a.diferencial)}</td>
-      <td class="py-2 text-right tabular-nums"><span class="${badgePct(a.uplift_pct)}">${formatPct(a.uplift_pct)}</span></td>
-      <td class="py-2 text-right tabular-nums">${formatPct(a.mix_uber_2025)}</td>
+      <td class="py-2 px-3 font-medium">${a.sucursal}</td>
+      <td class="py-2 px-3 text-right tabular-nums">${formatMoney(a.venta_2025)}</td>
+      <td class="py-2 px-3 text-right tabular-nums">${formatMoney(a.diferencial)}</td>
+      <td class="py-2 px-3 text-right tabular-nums"><span class="${badgePct(a.uplift_pct)}">${formatPct(a.uplift_pct)}</span></td>
+      <td class="py-2 px-3 text-right tabular-nums">${formatPct(a.mix_uber_2025)}</td>
     `;
     tbody.appendChild(tr);
   });
-
   zebraify("tblSucursal");
 }
 
@@ -386,99 +379,60 @@ function renderDrilldown() {
   for (const r of state.data.drilldown || []) {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td class="py-2">${r.mes}</td>
-      <td class="py-2 font-medium">${r.canal}</td>
-      <td class="py-2 font-medium">${r.sucursal}</td>
-      <td class="py-2 text-right tabular-nums">${formatMoney(r.venta_2025)}</td>
-      <td class="py-2 text-right tabular-nums">${formatMoney(r.diferencial)}</td>
-      <td class="py-2 text-right tabular-nums"><span class="${badgePct(r.uplift_pct)}">${formatPct(r.uplift_pct)}</span></td>
+      <td class="py-2 px-3">${r.mes}</td>
+      <td class="py-2 px-3 font-medium">${r.canal}</td>
+      <td class="py-2 px-3 font-medium">${r.sucursal}</td>
+      <td class="py-2 px-3 text-right tabular-nums">${formatMoney(r.venta_2025)}</td>
+      <td class="py-2 px-3 text-right tabular-nums">${formatMoney(r.diferencial)}</td>
+      <td class="py-2 px-3 text-right tabular-nums"><span class="${badgePct(r.uplift_pct)}">${formatPct(r.uplift_pct)}</span></td>
     `;
     tbody.appendChild(tr);
   }
   zebraify("tblDrill");
 }
 
-/**
- * ===== NEW: Executive cards (Banderas rojas + Plan + Ranking) =====
- */
 function renderExecutive(rows) {
   const { agg, total } = buildBranchAgg(rows);
-
-  // Percentiles para "tamaño"
   const ventas = agg.map((a) => a.venta_2025).sort((a, b) => a - b);
   const p75Venta = ventas.length ? ventas[Math.floor(0.75 * (ventas.length - 1))] : 0;
 
-  // Top por impacto/sensibilidad
   const topImpact = [...agg].sort((a, b) => b.diferencial - a.diferencial)[0];
   const topSens = [...agg].sort((a, b) => b.uplift_pct - a.uplift_pct)[0];
   const topMix = [...agg].sort((a, b) => b.mix_uber_2025 - a.mix_uber_2025)[0];
 
-  // Concentración uplift Top5
   const top5 = [...agg].sort((a, b) => b.diferencial - a.diferencial).slice(0, 5);
-  const top5Pct = total.diferencial > 0 ? top5.reduce((s, x) => s + x.diferencial, 0) / total.diferencial * 100 : 0;
-  el("concentrationTxt").textContent =
-    `Concentración: Top 5 explica ${formatPct(top5Pct)} del uplift total (${formatMoney(total.diferencial)}).`;
+  const top5Pct = total.diferencial > 0 ? (top5.reduce((s, x) => s + x.diferencial, 0) / total.diferencial) * 100 : 0;
+  el("concentrationTxt").textContent = `Concentración: Top 5 explica ${formatPct(top5Pct)} del uplift total (${formatMoney(total.diferencial)}).`;
 
-  // Red flags (derivados)
   const flags = [];
-
-  // 1) Mayo en UBER si se despega vs promedio UBER
   const rowsUber = rows.filter((r) => r.canal === "UBER");
   const rowsMayUber = rows.filter((r) => r.canal === "UBER" && r.mes === "Mayo");
   if (rowsMayUber.length && rowsUber.length) {
     const uMay = summarize(rowsMayUber).uplift_pct;
     const uAll = summarize(rowsUber).uplift_pct;
     if (uMay >= uAll + 2 || uMay >= THRESH_UPLIFT_RED) {
-      flags.push({
-        title: "Mayo en UBER",
-        body: `Uplift ${formatPct(uMay)} vs promedio UBER ${formatPct(uAll)} → auditar mix/campañas/operación.`,
-      });
+      flags.push({ title: "Mayo en UBER", body: `Uplift ${formatPct(uMay)} vs promedio UBER ${formatPct(uAll)} → auditar mix/campañas/operación.` });
     }
   }
-
-  // 2) Sucursal más sensible (riesgo elasticidad si mix alto)
   if (topSens) {
     const risk = (topSens.uplift_pct >= THRESH_UPLIFT_RED && topSens.mix_uber_2025 >= THRESH_MIX_UBER_ALTO);
-    const tag = risk ? "Riesgo de elasticidad" : "Sensibilidad elevada";
-    flags.push({
-      title: `${topSens.sucursal}`,
-      body: `Uplift ${formatPct(topSens.uplift_pct)} con mix UBER ${formatPct(topSens.mix_uber_2025)} → ${tag}.`,
-    });
+    flags.push({ title: `${topSens.sucursal}`, body: `Uplift ${formatPct(topSens.uplift_pct)} con mix UBER ${formatPct(topSens.mix_uber_2025)} → ${risk ? "riesgo de elasticidad" : "sensibilidad elevada"}.` });
   }
-
-  // 3) Concentración excesiva (top1)
   if (topImpact && topImpact.contrib_uplift_pct >= 25) {
-    flags.push({
-      title: `Dependencia ${topImpact.sucursal}`,
-      body: `Explica ${formatPct(topImpact.contrib_uplift_pct)} del uplift. Caída operativa pega al total.`,
-    });
+    flags.push({ title: `Dependencia ${topImpact.sucursal}`, body: `Explica ${formatPct(topImpact.contrib_uplift_pct)} del uplift. Caída operativa pega al total.` });
   }
-
-  // 4) Dark kitchen (mix altísimo)
   if (topMix && topMix.mix_uber_2025 >= THRESH_DARK_KITCHEN) {
-    flags.push({
-      title: `Mix digital extremo`,
-      body: `${topMix.sucursal}: mix UBER ${formatPct(topMix.mix_uber_2025)} → sensibilidad al canal digital.`,
-    });
+    flags.push({ title: `Mix digital extremo`, body: `${topMix.sucursal}: mix UBER ${formatPct(topMix.mix_uber_2025)} → sensibilidad al canal digital.` });
   }
-
-  // 5) Anomalía: SALON > UBER uplift% (si existe)
   const weird = agg.find((a) => a.salon_beats_uber);
-  if (weird) {
-    flags.push({
-      title: `Caso raro SALON>UBER`,
-      body: `${weird.sucursal}: patrón inverso → revisar tickets/mix/producto/operación.`,
-    });
-  }
+  if (weird) flags.push({ title: "Caso raro SALON>UBER", body: `${weird.sucursal}: patrón inverso → revisar tickets/mix/producto/operación.` });
 
   const list = el("redFlagsList");
   const empty = el("redFlagsEmpty");
   list.innerHTML = "";
   const shown = flags.slice(0, 4);
-
-  if (!shown.length) {
-    empty.classList.remove("hidden");
-  } else {
+  if (!shown.length) empty.classList.remove("hidden");
+  else {
     empty.classList.add("hidden");
     shown.forEach((f, i) => {
       const li = document.createElement("li");
@@ -496,29 +450,10 @@ function renderExecutive(rows) {
     });
   }
 
-  // Action plan (derivado de flags/top)
   const actions = [];
-
-  if (shown.some((x) => x.title.includes("Mayo en UBER"))) {
-    actions.push({
-      title: "Auditoría de Mayo",
-      body: "Validar lista de precios y ejecución digital. Confirmar que el salto es intencional.",
-    });
-  }
-
-  if (topSens) {
-    actions.push({
-      title: `Monitoreo ${topSens.sucursal}`,
-      body: `Semanas 1–4: seguimiento de transacciones/NPS. Si cae >5%, activar diagnóstico.`,
-    });
-  }
-
-  if (topImpact) {
-    actions.push({
-      title: `Defensa ${topImpact.sucursal}`,
-      body: "Asegurar disponibilidad, tiempos y calidad. Priorizar operación para sostener el uplift.",
-    });
-  }
+  if (shown.some((x) => x.title.includes("Mayo en UBER"))) actions.push({ title: "Auditoría de Mayo", body: "Validar lista de precios y ejecución digital. Confirmar que el salto es intencional." });
+  if (topSens) actions.push({ title: `Monitoreo ${topSens.sucursal}`, body: "Semanas 1–4: seguimiento de transacciones/NPS. Si cae >5%, activar diagnóstico." });
+  if (topImpact) actions.push({ title: `Defensa ${topImpact.sucursal}`, body: "Asegurar disponibilidad, tiempos y calidad. Priorizar operación para sostener el uplift." });
 
   const ap = el("actionPlanList");
   ap.innerHTML = "";
@@ -537,7 +472,6 @@ function renderExecutive(rows) {
     ap.appendChild(div);
   });
 
-  // Ranking card (Top 5) con toggle
   const rankList = el("rankingList");
   rankList.innerHTML = "";
 
@@ -582,12 +516,10 @@ function renderExecutive(rows) {
     rankList.appendChild(div);
   });
 
-  // Toggle buttons styling
   const impactBtn = el("rankImpactBtn");
   const sensBtn = el("rankSensBtn");
   const activeCls = "bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-soft3d";
   const idleCls = "text-slate-700 dark:text-slate-200 hover:bg-slate-900/5 dark:hover:bg-white/5";
-
   impactBtn.className = `px-3 py-1.5 text-sm rounded-lg transition ${state.rankMode === "impact" ? activeCls : idleCls}`;
   sensBtn.className = `px-3 py-1.5 text-sm rounded-lg transition ${state.rankMode === "sensitivity" ? activeCls : idleCls}`;
 }
@@ -616,7 +548,6 @@ function setupFilters() {
   el("fSucursal").addEventListener("change", (e) => { state.filters.sucursal = e.target.value; renderAll(); });
   el("fMes").addEventListener("change", (e) => { state.filters.mes = e.target.value; renderAll(); });
   el("fCanal").addEventListener("change", (e) => { state.filters.canal = e.target.value; renderAll(); });
-
   el("fSearch").addEventListener("input", (e) => { state.filters.search = e.target.value; renderAll(); });
 
   el("btnReset").addEventListener("click", () => {
@@ -635,8 +566,7 @@ function setupFilters() {
 
   el("btnExportJSON").addEventListener("click", () => {
     const rowsFiltered = applyFilters(state.data.rows);
-    const payload = { meta: state.data.meta, filters: state.filters, rows: rowsFiltered };
-    downloadBlob("vista_derivada.json", new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }));
+    downloadBlob("vista_derivada.json", new Blob([JSON.stringify({ meta: state.data.meta, filters: state.filters, rows: rowsFiltered }, null, 2)], { type: "application/json" }));
   });
 
   el("btnExportCSV").addEventListener("click", () => {
@@ -653,9 +583,8 @@ function setupFilters() {
     });
   });
 
-  // Ranking toggle
-  el("rankImpactBtn").addEventListener("click", () => { state.rankMode = "impact"; renderAll(); });
-  el("rankSensBtn").addEventListener("click", () => { state.rankMode = "sensitivity"; renderAll(); });
+  el("rankImpactBtn")?.addEventListener("click", () => { state.rankMode = "impact"; renderAll(); });
+  el("rankSensBtn")?.addEventListener("click", () => { state.rankMode = "sensitivity"; renderAll(); });
 }
 
 function initTheme() {
@@ -668,19 +597,14 @@ function initTheme() {
     if (t === "dark") root.classList.add("dark");
     else root.classList.remove("dark");
     localStorage.setItem("theme", t);
-    const label = el("themeLabel");
-    if (label) label.textContent = t === "dark" ? "Oscuro" : "Claro";
+    el("themeLabel").textContent = t === "dark" ? "Oscuro" : "Claro";
   };
 
   apply(theme);
-
-  const btn = el("themeToggle");
-  if (btn) {
-    btn.addEventListener("click", () => {
-      const now = root.classList.contains("dark") ? "dark" : "light";
-      apply(now === "dark" ? "light" : "dark");
-    });
-  }
+  el("themeToggle").addEventListener("click", () => {
+    const now = root.classList.contains("dark") ? "dark" : "light";
+    apply(now === "dark" ? "light" : "dark");
+  });
 }
 
 function renderAll() {
@@ -693,28 +617,27 @@ function renderAll() {
   renderCanal(rowsFiltered);
   renderMensual(rowsFiltered);
   renderSucursal(rowsFiltered);
+  resizeChartsSoon();
 }
 
 async function main() {
   initTheme();
+  setupResponsiveDetails();
 
   state.data = await fetchJSON(DATA_URL);
 
-  const generatedAtRaw = state.data?.meta?.generated_at;
-  const d = safeParseGeneratedAt(generatedAtRaw);
+  const d = safeParseGeneratedAt(state.data?.meta?.generated_at);
   const pretty = d ? d.toLocaleString("es-MX") : "—";
-
   el("lastRefresh").textContent = pretty;
-  const dv = el("dataVersion");
-  if (dv) dv.textContent = pretty;
+  el("dataVersion").textContent = pretty;
 
-  const fy = el("footerYear");
-  if (fy) fy.textContent = String(new Date().getFullYear());
+  el("footerYear").textContent = String(new Date().getFullYear());
 
   setupFilters();
   renderAll();
   renderScatterFromGlobal();
   renderDrilldown();
+  resizeChartsSoon();
 }
 
 main().catch((err) => {
