@@ -124,18 +124,12 @@ const UI = {
   },
 
   initTilt() {
-    // Solo en dispositivos con hover/puntero fino
     const canTilt = window.matchMedia?.("(hover:hover) and (pointer:fine)")?.matches;
     if (!canTilt || !window.VanillaTilt) return;
 
     document.querySelectorAll("[data-tilt]").forEach((node) => {
       if (node.vanillaTilt) return;
-      window.VanillaTilt.init(node, {
-        max: 4,
-        speed: 600,
-        glare: false,
-        scale: 1.01
-      });
+      window.VanillaTilt.init(node, { max: 4, speed: 600, glare: false, scale: 1.01 });
     });
   },
 };
@@ -192,45 +186,22 @@ const Data = {
 
 const Charts = {
   registerPlugins() {
-    // chartjs-plugin-annotation expone global diferente según build
     const ann = window.ChartAnnotation || window["chartjs-plugin-annotation"];
     if (ann) Chart.register(ann);
   },
 
-  cssVar(name) {
-    const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-    return v || "";
-  },
-
-  rgbTriplet(varName) {
-    const t = Charts.cssVar(varName);
-    return t ? `rgb(${t})` : undefined;
-  },
-
   applyGlobalTheme() {
-    const fg = Charts.rgbTriplet("--fg") || "#0f172a";
-    const muted = Charts.rgbTriplet("--muted") || "#64748b";
-    const grid = "rgba(148,163,184,.28)";
-
-    Chart.defaults.color = muted;
-    Chart.defaults.borderColor = grid;
+    const muted = getComputedStyle(document.documentElement).getPropertyValue("--muted").trim();
     Chart.defaults.font.family = "ui-sans-serif,system-ui,Segoe UI,Roboto,Arial";
-    Chart.defaults.plugins.legend.labels.color = muted;
-    Chart.defaults.plugins.tooltip.backgroundColor = "rgba(15,23,42,.92)";
-    Chart.defaults.plugins.tooltip.titleColor = "#fff";
-    Chart.defaults.plugins.tooltip.bodyColor = "#fff";
-    Chart.defaults.plugins.tooltip.borderColor = "rgba(255,255,255,.12)";
+    Chart.defaults.color = muted ? `rgb(${muted})` : "#64748b";
+    Chart.defaults.borderColor = "rgba(148,163,184,.28)";
+
+    const isDark = document.documentElement.classList.contains("dark");
+    Chart.defaults.plugins.tooltip.backgroundColor = isDark ? "rgba(248,250,252,.94)" : "rgba(15,23,42,.92)";
+    Chart.defaults.plugins.tooltip.titleColor = isDark ? "#0f172a" : "#fff";
+    Chart.defaults.plugins.tooltip.bodyColor = isDark ? "#0f172a" : "#fff";
+    Chart.defaults.plugins.tooltip.borderColor = isDark ? "rgba(15,23,42,.12)" : "rgba(255,255,255,.12)";
     Chart.defaults.plugins.tooltip.borderWidth = 1;
-
-    // En dark, tooltip más claro
-    if (document.documentElement.classList.contains("dark")) {
-      Chart.defaults.plugins.tooltip.backgroundColor = "rgba(248,250,252,.94)";
-      Chart.defaults.plugins.tooltip.titleColor = "#0f172a";
-      Chart.defaults.plugins.tooltip.bodyColor = "#0f172a";
-      Chart.defaults.plugins.tooltip.borderColor = "rgba(15,23,42,.12)";
-    }
-
-    return { fg, muted };
   },
 
   destroy(key) {
@@ -271,7 +242,7 @@ function setupResponsiveDetails() {
   apply();
 }
 
-/* ===== Theme ===== */
+/* ===== Theme (FIXED: no render before data) ===== */
 function initTheme() {
   const root = document.documentElement;
   const saved = localStorage.getItem("theme");
@@ -284,13 +255,17 @@ function initTheme() {
     localStorage.setItem("theme", t);
     el("themeLabel").textContent = t === "dark" ? "Oscuro" : "Claro";
 
-    // Re-theme charts
+    // ✅ Re-theme charts safely (render only if data exists)
     Charts.applyGlobalTheme();
-    renderAll();
-    renderScatter(); // mantiene medianas correctas
+    if (state.data?.rows) {
+      renderAll();
+      renderScatter();
+      resizeChartsSoon();
+    }
   };
 
   apply(theme);
+
   el("themeToggle").addEventListener("click", () => {
     const now = root.classList.contains("dark") ? "dark" : "light";
     apply(now === "dark" ? "light" : "dark");
@@ -320,7 +295,6 @@ function buildKPIs(kpi) {
     `;
     container.appendChild(div);
   }
-
   UI.initTilt();
 }
 
@@ -383,8 +357,6 @@ function renderCanal(rows) {
     ? contribs.map((a) => a.contrib)
     : contribs.map((a) => a.diferencial);
 
-  const { muted } = Charts.applyGlobalTheme();
-
   Charts.destroy("canal");
   state.charts.canal = new Chart(el("chartCanal"), {
     type: "doughnut",
@@ -393,7 +365,7 @@ function renderCanal(rows) {
       responsive: true,
       cutout: "68%",
       plugins: {
-        legend: { position: "bottom", labels: { boxWidth: 12, color: muted } },
+        legend: { position: "bottom", labels: { boxWidth: 12 } },
         tooltip: {
           callbacks: {
             label: (ctx) => {
@@ -433,8 +405,6 @@ function renderMensual(rows) {
   UI.zebraify("tblMensual");
 
   const labels = agg.map((a) => a.mes);
-
-  // Toggle view: money -> bar dif, line uplift; pct -> bar uplift, line dif
   const bar = state.viewMode === "pct" ? agg.map(a => a.uplift_pct) : agg.map(a => a.diferencial);
   const line = state.viewMode === "pct" ? agg.map(a => a.diferencial) : agg.map(a => a.uplift_pct);
 
@@ -443,38 +413,16 @@ function renderMensual(rows) {
     data: {
       labels,
       datasets: [
-        {
-          type: "bar",
-          label: state.viewMode === "pct" ? "Uplift %" : "Diferencial $",
-          data: bar,
-          yAxisID: "y",
-        },
-        {
-          type: "line",
-          label: state.viewMode === "pct" ? "Diferencial $" : "Uplift %",
-          data: line,
-          yAxisID: "y1",
-          tension: 0.3,
-          pointRadius: 3,
-        },
+        { type: "bar", label: state.viewMode === "pct" ? "Uplift %" : "Diferencial $", data: bar, yAxisID: "y" },
+        { type: "line", label: state.viewMode === "pct" ? "Diferencial $" : "Uplift %", data: line, yAxisID: "y1", tension: 0.3, pointRadius: 3 },
       ],
     },
     options: {
       responsive: true,
       plugins: { legend: { position: "bottom", labels: { boxWidth: 12 } } },
       scales: {
-        y: {
-          ticks: {
-            callback: (v) => state.viewMode === "pct" ? Utils.formatPct(v) : Utils.formatMoney(v)
-          }
-        },
-        y1: {
-          position: "right",
-          grid: { drawOnChartArea: false },
-          ticks: {
-            callback: (v) => state.viewMode === "pct" ? Utils.formatMoney(v) : Utils.formatPct(v)
-          }
-        },
+        y: { ticks: { callback: (v) => state.viewMode === "pct" ? Utils.formatPct(v) : Utils.formatMoney(v) } },
+        y1: { position: "right", grid: { drawOnChartArea: false }, ticks: { callback: (v) => state.viewMode === "pct" ? Utils.formatMoney(v) : Utils.formatPct(v) } },
       },
     },
   });
@@ -518,7 +466,8 @@ function renderSucursal(rows) {
 }
 
 function renderScatter() {
-  // Scatter usando data global (como tu original), pero con annotation plugin
+  if (!state.data) return;
+
   const branches = state.data?.sucursales || [];
   const points = branches.map((b) => ({ x: b.mix_uber_2025, y: b.uplift_pct, label: b.sucursal }));
 
@@ -529,16 +478,7 @@ function renderScatter() {
   Charts.destroy("scatter");
   state.charts.scatter = new Chart(el("chartScatter"), {
     type: "scatter",
-    data: {
-      datasets: [
-        {
-          label: "Sucursales",
-          data: points,
-          parsing: false,
-          pointRadius: 5,
-        }
-      ],
-    },
+    data: { datasets: [{ label: "Sucursales", data: points, parsing: false, pointRadius: 5 }] },
     options: {
       responsive: true,
       plugins: {
@@ -552,22 +492,8 @@ function renderScatter() {
         },
         annotation: {
           annotations: {
-            medMix: {
-              type: "line",
-              xMin: medX,
-              xMax: medX,
-              borderColor: "rgba(148,163,184,.9)",
-              borderWidth: 1,
-              label: { display: true, content: "Mediana mix", position: "start" }
-            },
-            medUplift: {
-              type: "line",
-              yMin: medY,
-              yMax: medY,
-              borderColor: "rgba(148,163,184,.9)",
-              borderWidth: 1,
-              label: { display: true, content: "Mediana uplift", position: "start" }
-            }
+            medMix: { type: "line", xMin: medX, xMax: medX, borderColor: "rgba(148,163,184,.9)", borderWidth: 1 },
+            medUplift: { type: "line", yMin: medY, yMax: medY, borderColor: "rgba(148,163,184,.9)", borderWidth: 1 },
           }
         }
       },
@@ -580,6 +506,8 @@ function renderScatter() {
 }
 
 function renderDrilldown() {
+  if (!state.data) return;
+
   const tbody = el("tblDrill");
   tbody.innerHTML = "";
   for (const r of state.data?.drilldown || []) {
@@ -638,7 +566,6 @@ function renderExecutive(rows) {
   const weird = agg.find((a) => a.salon_beats_uber);
   if (weird) flags.push({ title: "Caso raro SALON>UBER", body: `${weird.sucursal}: patrón inverso → revisar tickets/mix/producto/operación.` });
 
-  // Render red flags
   const list = el("redFlagsList");
   const empty = el("redFlagsEmpty");
   list.innerHTML = "";
@@ -663,7 +590,6 @@ function renderExecutive(rows) {
     });
   }
 
-  // Action plan
   const actions = [];
   if (shown.some((x) => x.title.includes("Mayo en UBER"))) actions.push({ title: "Auditoría de Mayo", body: "Validar lista de precios y ejecución digital. Confirmar que el salto es intencional." });
   if (topSens) actions.push({ title: `Monitoreo ${topSens.sucursal}`, body: "Semanas 1–4: seguimiento de transacciones/NPS. Si cae >5%, activar diagnóstico." });
@@ -686,7 +612,6 @@ function renderExecutive(rows) {
     ap.appendChild(div);
   });
 
-  // Ranking list
   const rankList = el("rankingList");
   rankList.innerHTML = "";
 
@@ -695,7 +620,9 @@ function renderExecutive(rows) {
     return b.diferencial - a.diferencial;
   }).slice(0, 5);
 
-  const maxVal = sorted.length ? Math.max(...sorted.map((x) => (state.rankMode === "sensitivity" ? x.uplift_pct : x.diferencial))) : 0;
+  const maxVal = sorted.length
+    ? Math.max(...sorted.map((x) => (state.rankMode === "sensitivity" ? x.uplift_pct : x.diferencial)))
+    : 0;
 
   sorted.forEach((b, i) => {
     const cls = Data.classifyBranch(b, p75Venta);
@@ -711,7 +638,6 @@ function renderExecutive(rows) {
     div.className = "surface p-4 text-left w-full";
     div.dataset.tilt = "";
     div.title = "Click para filtrar esta sucursal";
-
     div.addEventListener("click", () => {
       state.filters.sucursal = b.sucursal;
       el("fSucursal").value = b.sucursal;
@@ -753,6 +679,9 @@ function renderExecutive(rows) {
 }
 
 function renderAll() {
+  // ✅ GUARD (evita el crash)
+  if (!state.data?.rows) return;
+
   const rowsFiltered = Utils.applyFilters(state.data.rows);
   const kpi = Utils.summarize(rowsFiltered);
 
@@ -846,6 +775,7 @@ async function main() {
   initTheme();
   setupResponsiveDetails();
 
+  // ✅ Carga data primero
   state.data = await Data.fetchJSON(DATA_URL);
 
   const d = Utils.safeParseGeneratedAt(state.data?.meta?.generated_at);
@@ -857,6 +787,7 @@ async function main() {
   setupFilters();
   Charts.applyGlobalTheme();
 
+  // ✅ Render solo después de tener data
   renderAll();
   renderScatter();
   renderDrilldown();
