@@ -1,0 +1,1756 @@
+{
+  "meta": {
+    "period": "Enero–Mayo",
+    "generated_at": "2026-01-13T10:09:43.286649+00:00",
+    "currency": "MXN",
+    "assumptions": [
+      "Mismo volumen (cambio sólo por precio)",
+      "Fuente inmutable (solo lectura)"
+    ]
+  },
+  "kpis": {
+    "total": {
+      "venta_2025": 39917862.54,
+      "venta_2026": 41927042.61,
+      "diferencial": 2009180.07,
+      "uplift_pct": 5.0333
+    },
+    "canal": [
+      {
+        "canal": "SALON",
+        "venta_2025": 26717981.92,
+        "diferencial": 995106.71,
+        "uplift_pct": 3.7245,
+        "mix_venta_2025": 66.9324,
+        "contrib_uplift_pct": 49.528
+      },
+      {
+        "canal": "UBER",
+        "venta_2025": 13199880.62,
+        "diferencial": 1014073.36,
+        "uplift_pct": 7.6824,
+        "mix_venta_2025": 33.0676,
+        "contrib_uplift_pct": 50.472
+      }
+    ],
+    "mensual": [
+      {
+        "mes": "Enero",
+        "venta_2025": 7833659.72,
+        "diferencial": 350908.05,
+        "uplift_pct": 4.4795
+      },
+      {
+        "mes": "Febrero",
+        "venta_2025": 7170970.98,
+        "diferencial": 350983.09,
+        "uplift_pct": 4.8945
+      },
+      {
+        "mes": "Marzo",
+        "venta_2025": 8580584.34,
+        "diferencial": 419355.72,
+        "uplift_pct": 4.8873
+      },
+      {
+        "mes": "Abril",
+        "venta_2025": 7799881.17,
+        "diferencial": 366684.87,
+        "uplift_pct": 4.7012
+      },
+      {
+        "mes": "Mayo",
+        "venta_2025": 8532766.33,
+        "diferencial": 521248.34,
+        "uplift_pct": 6.1088
+      }
+    ]
+  },
+  "sucursales": [
+    {
+      "sucursal": "PEDREGAL",
+      "venta_2025": 7665774.76,
+      "diferencial": 246216.77,
+      "uplift_pct": 3.2119,
+      "mix_uber_2025": 17.696,
+      "contrib_uplift_pct": 12.2546
+    },
+    {
+      "sucursal": "TLALPAN",
+      "venta_2025": 2810817.2,
+      "diferencial": 218566.84,
+      "uplift_pct": 7.7759,
+      "mix_uber_2025": 46.7009,
+      "contrib_uplift_pct": 10.8784
+    },
+    {
+      "sucursal": "NAPOLES",
+      "venta_2025": 2411795.8,
+      "diferencial": 211053.46,
+      "uplift_pct": 8.7509,
+      "mix_uber_2025": 59.7615,
+      "contrib_uplift_pct": 10.5045
+    },
+    {
+      "sucursal": "AGUILAS",
+      "venta_2025": 3437242.57,
+      "diferencial": 182972.83,
+      "uplift_pct": 5.3232,
+      "mix_uber_2025": 26.9112,
+      "contrib_uplift_pct": 9.1068
+    },
+    {
+      "sucursal": "REVOLUCION",
+      "venta_2025": 2190502.72,
+      "diferencial": 170866.76,
+      "uplift_pct": 7.8003,
+      "mix_uber_2025": 48.2332,
+      "contrib_uplift_pct": 8.5043
+    },
+    {
+      "sucursal": "POLANCO",
+      "venta_2025": 2912946.87,
+      "diferencial": 155976.32,
+      "uplift_pct": 5.3546,
+      "mix_uber_2025": 41.1955,
+      "contrib_uplift_pct": 7.7632
+    },
+    {
+      "sucursal": "COYOACAN",
+      "venta_2025": 3013976.48,
+      "diferencial": 141486.64,
+      "uplift_pct": 4.6944,
+      "mix_uber_2025": 27.3484,
+      "contrib_uplift_pct": 7.042
+    },
+    {
+      "sucursal": "PARAGON",
+      "venta_2025": 2654504.93,
+      "diferencial": 137070.46,
+      "uplift_pct": 5.1637,
+      "mix_uber_2025": 42.4214,
+      "contrib_uplift_pct": 6.8222
+    },
+    {
+      "sucursal": "SANTA FE",
+      "venta_2025": 3589777.52,
+      "diferencial": 131007.71,
+      "uplift_pct": 3.6495,
+      "mix_uber_2025": 26.2308,
+      "contrib_uplift_pct": 6.5205
+    },
+    {
+      "sucursal": "SAN JERONIMO",
+      "venta_2025": 2527015.06,
+      "diferencial": 107274.27,
+      "uplift_pct": 4.2451,
+      "mix_uber_2025": 30.5133,
+      "contrib_uplift_pct": 5.3392
+    },
+    {
+      "sucursal": "OLIVAR",
+      "venta_2025": 2500441.65,
+      "diferencial": 106607.51,
+      "uplift_pct": 4.2635,
+      "mix_uber_2025": 31.5523,
+      "contrib_uplift_pct": 5.306
+    },
+    {
+      "sucursal": "AXOMIATLA",
+      "venta_2025": 2358798.47,
+      "diferencial": 105713.59,
+      "uplift_pct": 4.4817,
+      "mix_uber_2025": 29.5378,
+      "contrib_uplift_pct": 5.2615
+    },
+    {
+      "sucursal": "SANTA TERESA",
+      "venta_2025": 1844268.51,
+      "diferencial": 94366.91,
+      "uplift_pct": 5.1168,
+      "mix_uber_2025": 41.1571,
+      "contrib_uplift_pct": 4.6968
+    }
+  ],
+  "scatter": {
+    "x_label": "Mix UBER (Venta 2025 %)",
+    "y_label": "Uplift % (Jan–May)",
+    "corr_mix_uber_uplift": 0.9025,
+    "median_mix_uber": 31.5523,
+    "median_uplift": 5.1168
+  },
+  "drilldown": [
+    {
+      "mes": "Enero",
+      "canal": "SALON",
+      "sucursal": "PEDREGAL",
+      "venta_2025": 1304350.93,
+      "diferencial": 35741.75,
+      "uplift_pct": 2.7402
+    },
+    {
+      "mes": "Enero",
+      "canal": "SALON",
+      "sucursal": "AGUILAS",
+      "venta_2025": 508730.27,
+      "diferencial": 25023.03,
+      "uplift_pct": 4.9187
+    },
+    {
+      "mes": "Enero",
+      "canal": "SALON",
+      "sucursal": "REVOLUCION",
+      "venta_2025": 242750.15,
+      "diferencial": 18017.0,
+      "uplift_pct": 7.422
+    },
+    {
+      "mes": "Enero",
+      "canal": "SALON",
+      "sucursal": "TLALPAN",
+      "venta_2025": 291107.64,
+      "diferencial": 17343.52,
+      "uplift_pct": 5.9578
+    },
+    {
+      "mes": "Enero",
+      "canal": "SALON",
+      "sucursal": "COYOACAN",
+      "venta_2025": 393767.8,
+      "diferencial": 15467.58,
+      "uplift_pct": 3.9281
+    },
+    {
+      "mes": "Enero",
+      "canal": "UBER",
+      "sucursal": "TLALPAN",
+      "venta_2025": 264311.35,
+      "diferencial": 23310.81,
+      "uplift_pct": 8.8195
+    },
+    {
+      "mes": "Enero",
+      "canal": "UBER",
+      "sucursal": "NAPOLES",
+      "venta_2025": 292080.08,
+      "diferencial": 22231.82,
+      "uplift_pct": 7.6115
+    },
+    {
+      "mes": "Enero",
+      "canal": "UBER",
+      "sucursal": "POLANCO",
+      "venta_2025": 247945.43,
+      "diferencial": 13392.95,
+      "uplift_pct": 5.4016
+    },
+    {
+      "mes": "Enero",
+      "canal": "UBER",
+      "sucursal": "PEDREGAL",
+      "venta_2025": 258808.97,
+      "diferencial": 12738.25,
+      "uplift_pct": 4.9219
+    },
+    {
+      "mes": "Enero",
+      "canal": "UBER",
+      "sucursal": "SANTA FE",
+      "venta_2025": 206415.36,
+      "diferencial": 11510.95,
+      "uplift_pct": 5.5766
+    },
+    {
+      "mes": "Febrero",
+      "canal": "SALON",
+      "sucursal": "PEDREGAL",
+      "venta_2025": 1106851.05,
+      "diferencial": 28430.03,
+      "uplift_pct": 2.5686
+    },
+    {
+      "mes": "Febrero",
+      "canal": "SALON",
+      "sucursal": "AGUILAS",
+      "venta_2025": 446399.7,
+      "diferencial": 21166.04,
+      "uplift_pct": 4.7415
+    },
+    {
+      "mes": "Febrero",
+      "canal": "SALON",
+      "sucursal": "TLALPAN",
+      "venta_2025": 303362.3,
+      "diferencial": 20376.65,
+      "uplift_pct": 6.7169
+    },
+    {
+      "mes": "Febrero",
+      "canal": "SALON",
+      "sucursal": "REVOLUCION",
+      "venta_2025": 211916.08,
+      "diferencial": 18628.88,
+      "uplift_pct": 8.7907
+    },
+    {
+      "mes": "Febrero",
+      "canal": "SALON",
+      "sucursal": "NAPOLES",
+      "venta_2025": 197305.24,
+      "diferencial": 15108.41,
+      "uplift_pct": 7.6574
+    },
+    {
+      "mes": "Febrero",
+      "canal": "UBER",
+      "sucursal": "NAPOLES",
+      "venta_2025": 255366.32,
+      "diferencial": 21099.11,
+      "uplift_pct": 8.2623
+    },
+    {
+      "mes": "Febrero",
+      "canal": "UBER",
+      "sucursal": "TLALPAN",
+      "venta_2025": 224217.37,
+      "diferencial": 20336.42,
+      "uplift_pct": 9.07
+    },
+    {
+      "mes": "Febrero",
+      "canal": "UBER",
+      "sucursal": "PARAGON",
+      "venta_2025": 218686.72,
+      "diferencial": 15050.69,
+      "uplift_pct": 6.8823
+    },
+    {
+      "mes": "Febrero",
+      "canal": "UBER",
+      "sucursal": "PEDREGAL",
+      "venta_2025": 240414.83,
+      "diferencial": 14670.91,
+      "uplift_pct": 6.1023
+    },
+    {
+      "mes": "Febrero",
+      "canal": "UBER",
+      "sucursal": "POLANCO",
+      "venta_2025": 208482.04,
+      "diferencial": 12563.82,
+      "uplift_pct": 6.0263
+    },
+    {
+      "mes": "Marzo",
+      "canal": "SALON",
+      "sucursal": "PEDREGAL",
+      "venta_2025": 1344616.39,
+      "diferencial": 31931.65,
+      "uplift_pct": 2.3748
+    },
+    {
+      "mes": "Marzo",
+      "canal": "SALON",
+      "sucursal": "AGUILAS",
+      "venta_2025": 556279.03,
+      "diferencial": 24224.79,
+      "uplift_pct": 4.3548
+    },
+    {
+      "mes": "Marzo",
+      "canal": "SALON",
+      "sucursal": "NAPOLES",
+      "venta_2025": 214457.89,
+      "diferencial": 20200.99,
+      "uplift_pct": 9.4196
+    },
+    {
+      "mes": "Marzo",
+      "canal": "SALON",
+      "sucursal": "COYOACAN",
+      "venta_2025": 566720.28,
+      "diferencial": 19063.42,
+      "uplift_pct": 3.3638
+    },
+    {
+      "mes": "Marzo",
+      "canal": "SALON",
+      "sucursal": "TLALPAN",
+      "venta_2025": 297044.25,
+      "diferencial": 18821.87,
+      "uplift_pct": 6.3364
+    },
+    {
+      "mes": "Marzo",
+      "canal": "UBER",
+      "sucursal": "NAPOLES",
+      "venta_2025": 311347.08,
+      "diferencial": 30812.81,
+      "uplift_pct": 9.8966
+    },
+    {
+      "mes": "Marzo",
+      "canal": "UBER",
+      "sucursal": "TLALPAN",
+      "venta_2025": 281223.98,
+      "diferencial": 25549.95,
+      "uplift_pct": 9.0853
+    },
+    {
+      "mes": "Marzo",
+      "canal": "UBER",
+      "sucursal": "PEDREGAL",
+      "venta_2025": 278444.99,
+      "diferencial": 17735.66,
+      "uplift_pct": 6.3695
+    },
+    {
+      "mes": "Marzo",
+      "canal": "UBER",
+      "sucursal": "PARAGON",
+      "venta_2025": 243960.83,
+      "diferencial": 17074.32,
+      "uplift_pct": 6.9988
+    },
+    {
+      "mes": "Marzo",
+      "canal": "UBER",
+      "sucursal": "POLANCO",
+      "venta_2025": 239120.94,
+      "diferencial": 16614.9,
+      "uplift_pct": 6.9483
+    },
+    {
+      "mes": "Abril",
+      "canal": "SALON",
+      "sucursal": "PEDREGAL",
+      "venta_2025": 1296697.84,
+      "diferencial": 29088.09,
+      "uplift_pct": 2.2432
+    },
+    {
+      "mes": "Abril",
+      "canal": "SALON",
+      "sucursal": "AGUILAS",
+      "venta_2025": 495806.9,
+      "diferencial": 24607.71,
+      "uplift_pct": 4.9632
+    },
+    {
+      "mes": "Abril",
+      "canal": "SALON",
+      "sucursal": "REVOLUCION",
+      "venta_2025": 209733.35,
+      "diferencial": 19873.55,
+      "uplift_pct": 9.4756
+    },
+    {
+      "mes": "Abril",
+      "canal": "SALON",
+      "sucursal": "TLALPAN",
+      "venta_2025": 280815.55,
+      "diferencial": 17800.83,
+      "uplift_pct": 6.339
+    },
+    {
+      "mes": "Abril",
+      "canal": "SALON",
+      "sucursal": "POLANCO",
+      "venta_2025": 358130.01,
+      "diferencial": 15080.27,
+      "uplift_pct": 4.2108
+    },
+    {
+      "mes": "Abril",
+      "canal": "UBER",
+      "sucursal": "NAPOLES",
+      "venta_2025": 267506.23,
+      "diferencial": 24638.73,
+      "uplift_pct": 9.2105
+    },
+    {
+      "mes": "Abril",
+      "canal": "UBER",
+      "sucursal": "TLALPAN",
+      "venta_2025": 237546.03,
+      "diferencial": 21821.9,
+      "uplift_pct": 9.1864
+    },
+    {
+      "mes": "Abril",
+      "canal": "UBER",
+      "sucursal": "PEDREGAL",
+      "venta_2025": 261154.21,
+      "diferencial": 15566.29,
+      "uplift_pct": 5.9606
+    },
+    {
+      "mes": "Abril",
+      "canal": "UBER",
+      "sucursal": "POLANCO",
+      "venta_2025": 216458.37,
+      "diferencial": 14641.38,
+      "uplift_pct": 6.7641
+    },
+    {
+      "mes": "Abril",
+      "canal": "UBER",
+      "sucursal": "PARAGON",
+      "venta_2025": 227683.77,
+      "diferencial": 13819.6,
+      "uplift_pct": 6.0696
+    },
+    {
+      "mes": "Mayo",
+      "canal": "SALON",
+      "sucursal": "PEDREGAL",
+      "venta_2025": 1256722.51,
+      "diferencial": 26599.96,
+      "uplift_pct": 2.1166
+    },
+    {
+      "mes": "Mayo",
+      "canal": "SALON",
+      "sucursal": "AGUILAS",
+      "venta_2025": 505022.65,
+      "diferencial": 21172.56,
+      "uplift_pct": 4.1924
+    },
+    {
+      "mes": "Mayo",
+      "canal": "SALON",
+      "sucursal": "REVOLUCION",
+      "venta_2025": 233057.72,
+      "diferencial": 19799.36,
+      "uplift_pct": 8.4955
+    },
+    {
+      "mes": "Mayo",
+      "canal": "SALON",
+      "sucursal": "TLALPAN",
+      "venta_2025": 325809.16,
+      "diferencial": 18786.27,
+      "uplift_pct": 5.766
+    },
+    {
+      "mes": "Mayo",
+      "canal": "SALON",
+      "sucursal": "COYOACAN",
+      "venta_2025": 427663.8,
+      "diferencial": 16196.95,
+      "uplift_pct": 3.7873
+    },
+    {
+      "mes": "Mayo",
+      "canal": "UBER",
+      "sucursal": "NAPOLES",
+      "venta_2025": 315025.0,
+      "diferencial": 42554.66,
+      "uplift_pct": 13.5083
+    },
+    {
+      "mes": "Mayo",
+      "canal": "UBER",
+      "sucursal": "TLALPAN",
+      "venta_2025": 305379.57,
+      "diferencial": 34418.62,
+      "uplift_pct": 11.2708
+    },
+    {
+      "mes": "Mayo",
+      "canal": "UBER",
+      "sucursal": "PEDREGAL",
+      "venta_2025": 317713.04,
+      "diferencial": 33714.18,
+      "uplift_pct": 10.6115
+    },
+    {
+      "mes": "Mayo",
+      "canal": "UBER",
+      "sucursal": "POLANCO",
+      "venta_2025": 287994.83,
+      "diferencial": 33221.56,
+      "uplift_pct": 11.5355
+    },
+    {
+      "mes": "Mayo",
+      "canal": "UBER",
+      "sucursal": "AGUILAS",
+      "venta_2025": 215881.85,
+      "diferencial": 24610.16,
+      "uplift_pct": 11.3998
+    }
+  ],
+  "rows": [
+    {
+      "sucursal": "AGUILAS",
+      "mes": "Enero",
+      "canal": "UBER",
+      "venta_2025": 183940.87,
+      "venta_2026": 193162.69,
+      "diferencial": 9221.82,
+      "uplift_pct": 5.0135
+    },
+    {
+      "sucursal": "AGUILAS",
+      "mes": "Enero",
+      "canal": "SALON",
+      "venta_2025": 508730.27,
+      "venta_2026": 533753.3,
+      "diferencial": 25023.03,
+      "uplift_pct": 4.9187
+    },
+    {
+      "sucursal": "AGUILAS",
+      "mes": "Febrero",
+      "canal": "UBER",
+      "venta_2025": 174321.51,
+      "venta_2026": 184858.56,
+      "diferencial": 10537.05,
+      "uplift_pct": 6.0446
+    },
+    {
+      "sucursal": "AGUILAS",
+      "mes": "Febrero",
+      "canal": "SALON",
+      "venta_2025": 446399.7,
+      "venta_2026": 467565.74,
+      "diferencial": 21166.04,
+      "uplift_pct": 4.7415
+    },
+    {
+      "sucursal": "AGUILAS",
+      "mes": "Marzo",
+      "canal": "UBER",
+      "venta_2025": 181899.09,
+      "venta_2026": 193142.93,
+      "diferencial": 11243.84,
+      "uplift_pct": 6.1814
+    },
+    {
+      "sucursal": "AGUILAS",
+      "mes": "Marzo",
+      "canal": "SALON",
+      "venta_2025": 556279.03,
+      "venta_2026": 580503.82,
+      "diferencial": 24224.79,
+      "uplift_pct": 4.3548
+    },
+    {
+      "sucursal": "AGUILAS",
+      "mes": "Abril",
+      "canal": "UBER",
+      "venta_2025": 168960.7,
+      "venta_2026": 180126.53,
+      "diferencial": 11165.83,
+      "uplift_pct": 6.6085
+    },
+    {
+      "sucursal": "AGUILAS",
+      "mes": "Abril",
+      "canal": "SALON",
+      "venta_2025": 495806.9,
+      "venta_2026": 520414.61,
+      "diferencial": 24607.71,
+      "uplift_pct": 4.9632
+    },
+    {
+      "sucursal": "AGUILAS",
+      "mes": "Mayo",
+      "canal": "UBER",
+      "venta_2025": 215881.85,
+      "venta_2026": 240492.01,
+      "diferencial": 24610.16,
+      "uplift_pct": 11.3998
+    },
+    {
+      "sucursal": "AGUILAS",
+      "mes": "Mayo",
+      "canal": "SALON",
+      "venta_2025": 505022.65,
+      "venta_2026": 526195.21,
+      "diferencial": 21172.56,
+      "uplift_pct": 4.1924
+    },
+    {
+      "sucursal": "AXOMIATLA",
+      "mes": "Enero",
+      "canal": "UBER",
+      "venta_2025": 149608.69,
+      "venta_2026": 156780.34,
+      "diferencial": 7171.65,
+      "uplift_pct": 4.7936
+    },
+    {
+      "sucursal": "AXOMIATLA",
+      "mes": "Enero",
+      "canal": "SALON",
+      "venta_2025": 346311.29,
+      "venta_2026": 358722.51,
+      "diferencial": 12411.22,
+      "uplift_pct": 3.5838
+    },
+    {
+      "sucursal": "AXOMIATLA",
+      "mes": "Febrero",
+      "canal": "UBER",
+      "venta_2025": 99954.45,
+      "venta_2026": 106166.71,
+      "diferencial": 6212.26,
+      "uplift_pct": 6.2151
+    },
+    {
+      "sucursal": "AXOMIATLA",
+      "mes": "Febrero",
+      "canal": "SALON",
+      "venta_2025": 307619.62,
+      "venta_2026": 319323.5,
+      "diferencial": 11703.88,
+      "uplift_pct": 3.8047
+    },
+    {
+      "sucursal": "AXOMIATLA",
+      "mes": "Marzo",
+      "canal": "UBER",
+      "venta_2025": 152675.77,
+      "venta_2026": 162358.97,
+      "diferencial": 9683.2,
+      "uplift_pct": 6.3423
+    },
+    {
+      "sucursal": "AXOMIATLA",
+      "mes": "Marzo",
+      "canal": "SALON",
+      "venta_2025": 362284.89,
+      "venta_2026": 374345.86,
+      "diferencial": 12060.97,
+      "uplift_pct": 3.3291
+    },
+    {
+      "sucursal": "AXOMIATLA",
+      "mes": "Abril",
+      "canal": "UBER",
+      "venta_2025": 127334.09,
+      "venta_2026": 135068.85,
+      "diferencial": 7734.76,
+      "uplift_pct": 6.0744
+    },
+    {
+      "sucursal": "AXOMIATLA",
+      "mes": "Abril",
+      "canal": "SALON",
+      "venta_2025": 302104.38,
+      "venta_2026": 313105.13,
+      "diferencial": 11000.75,
+      "uplift_pct": 3.6414
+    },
+    {
+      "sucursal": "AXOMIATLA",
+      "mes": "Mayo",
+      "canal": "UBER",
+      "venta_2025": 167165.28,
+      "venta_2026": 182565.0,
+      "diferencial": 15399.72,
+      "uplift_pct": 9.2123
+    },
+    {
+      "sucursal": "AXOMIATLA",
+      "mes": "Mayo",
+      "canal": "SALON",
+      "venta_2025": 343740.01,
+      "venta_2026": 356075.19,
+      "diferencial": 12335.18,
+      "uplift_pct": 3.5885
+    },
+    {
+      "sucursal": "COYOACAN",
+      "mes": "Enero",
+      "canal": "UBER",
+      "venta_2025": 145606.99,
+      "venta_2026": 153106.96,
+      "diferencial": 7499.97,
+      "uplift_pct": 5.1508
+    },
+    {
+      "sucursal": "COYOACAN",
+      "mes": "Enero",
+      "canal": "SALON",
+      "venta_2025": 393767.8,
+      "venta_2026": 409235.38,
+      "diferencial": 15467.58,
+      "uplift_pct": 3.9281
+    },
+    {
+      "sucursal": "COYOACAN",
+      "mes": "Febrero",
+      "canal": "UBER",
+      "venta_2025": 158801.28,
+      "venta_2026": 168302.58,
+      "diferencial": 9501.3,
+      "uplift_pct": 5.9831
+    },
+    {
+      "sucursal": "COYOACAN",
+      "mes": "Febrero",
+      "canal": "SALON",
+      "venta_2025": 373743.4,
+      "venta_2026": 388421.27,
+      "diferencial": 14677.87,
+      "uplift_pct": 3.9273
+    },
+    {
+      "sucursal": "COYOACAN",
+      "mes": "Marzo",
+      "canal": "UBER",
+      "venta_2025": 172993.05,
+      "venta_2026": 184178.32,
+      "diferencial": 11185.27,
+      "uplift_pct": 6.4657
+    },
+    {
+      "sucursal": "COYOACAN",
+      "mes": "Marzo",
+      "canal": "SALON",
+      "venta_2025": 566720.28,
+      "venta_2026": 585783.7,
+      "diferencial": 19063.42,
+      "uplift_pct": 3.3638
+    },
+    {
+      "sucursal": "COYOACAN",
+      "mes": "Abril",
+      "canal": "UBER",
+      "venta_2025": 156262.91,
+      "venta_2026": 165926.51,
+      "diferencial": 9663.6,
+      "uplift_pct": 6.1842
+    },
+    {
+      "sucursal": "COYOACAN",
+      "mes": "Abril",
+      "canal": "SALON",
+      "venta_2025": 427805.85,
+      "venta_2026": 442871.91,
+      "diferencial": 15066.06,
+      "uplift_pct": 3.5217
+    },
+    {
+      "sucursal": "COYOACAN",
+      "mes": "Mayo",
+      "canal": "UBER",
+      "venta_2025": 190611.12,
+      "venta_2026": 213775.74,
+      "diferencial": 23164.62,
+      "uplift_pct": 12.1528
+    },
+    {
+      "sucursal": "COYOACAN",
+      "mes": "Mayo",
+      "canal": "SALON",
+      "venta_2025": 427663.8,
+      "venta_2026": 443860.75,
+      "diferencial": 16196.95,
+      "uplift_pct": 3.7873
+    },
+    {
+      "sucursal": "NAPOLES",
+      "mes": "Enero",
+      "canal": "UBER",
+      "venta_2025": 292080.08,
+      "venta_2026": 314311.9,
+      "diferencial": 22231.82,
+      "uplift_pct": 7.6115
+    },
+    {
+      "sucursal": "NAPOLES",
+      "mes": "Enero",
+      "canal": "SALON",
+      "venta_2025": 193314.3,
+      "venta_2026": 205829.21,
+      "diferencial": 12514.91,
+      "uplift_pct": 6.4739
+    },
+    {
+      "sucursal": "NAPOLES",
+      "mes": "Febrero",
+      "canal": "UBER",
+      "venta_2025": 255366.32,
+      "venta_2026": 276465.43,
+      "diferencial": 21099.11,
+      "uplift_pct": 8.2623
+    },
+    {
+      "sucursal": "NAPOLES",
+      "mes": "Febrero",
+      "canal": "SALON",
+      "venta_2025": 197305.24,
+      "venta_2026": 212413.65,
+      "diferencial": 15108.41,
+      "uplift_pct": 7.6574
+    },
+    {
+      "sucursal": "NAPOLES",
+      "mes": "Marzo",
+      "canal": "UBER",
+      "venta_2025": 311347.08,
+      "venta_2026": 342159.89,
+      "diferencial": 30812.81,
+      "uplift_pct": 9.8966
+    },
+    {
+      "sucursal": "NAPOLES",
+      "mes": "Marzo",
+      "canal": "SALON",
+      "venta_2025": 214457.89,
+      "venta_2026": 234658.88,
+      "diferencial": 20200.99,
+      "uplift_pct": 9.4196
+    },
+    {
+      "sucursal": "NAPOLES",
+      "mes": "Abril",
+      "canal": "UBER",
+      "venta_2025": 267506.23,
+      "venta_2026": 292144.96,
+      "diferencial": 24638.73,
+      "uplift_pct": 9.2105
+    },
+    {
+      "sucursal": "NAPOLES",
+      "mes": "Abril",
+      "canal": "SALON",
+      "venta_2025": 173059.56,
+      "venta_2026": 185369.73,
+      "diferencial": 12310.17,
+      "uplift_pct": 7.1133
+    },
+    {
+      "sucursal": "NAPOLES",
+      "mes": "Mayo",
+      "canal": "UBER",
+      "venta_2025": 315025.0,
+      "venta_2026": 357579.66,
+      "diferencial": 42554.66,
+      "uplift_pct": 13.5083
+    },
+    {
+      "sucursal": "NAPOLES",
+      "mes": "Mayo",
+      "canal": "SALON",
+      "venta_2025": 192334.1,
+      "venta_2026": 201915.95,
+      "diferencial": 9581.85,
+      "uplift_pct": 4.9819
+    },
+    {
+      "sucursal": "OLIVAR",
+      "mes": "Enero",
+      "canal": "UBER",
+      "venta_2025": 145384.17,
+      "venta_2026": 152551.51,
+      "diferencial": 7167.34,
+      "uplift_pct": 4.9299
+    },
+    {
+      "sucursal": "OLIVAR",
+      "mes": "Enero",
+      "canal": "SALON",
+      "venta_2025": 314654.8,
+      "venta_2026": 324021.17,
+      "diferencial": 9366.37,
+      "uplift_pct": 2.9767
+    },
+    {
+      "sucursal": "OLIVAR",
+      "mes": "Febrero",
+      "canal": "UBER",
+      "venta_2025": 138569.65,
+      "venta_2026": 147276.3,
+      "diferencial": 8706.65,
+      "uplift_pct": 6.2832
+    },
+    {
+      "sucursal": "OLIVAR",
+      "mes": "Febrero",
+      "canal": "SALON",
+      "venta_2025": 297177.23,
+      "venta_2026": 305220.29,
+      "diferencial": 8043.06,
+      "uplift_pct": 2.7065
+    },
+    {
+      "sucursal": "OLIVAR",
+      "mes": "Marzo",
+      "canal": "UBER",
+      "venta_2025": 161339.7,
+      "venta_2026": 172981.29,
+      "diferencial": 11641.59,
+      "uplift_pct": 7.2156
+    },
+    {
+      "sucursal": "OLIVAR",
+      "mes": "Marzo",
+      "canal": "SALON",
+      "venta_2025": 420466.28,
+      "venta_2026": 433964.68,
+      "diferencial": 13498.4,
+      "uplift_pct": 3.2103
+    },
+    {
+      "sucursal": "OLIVAR",
+      "mes": "Abril",
+      "canal": "UBER",
+      "venta_2025": 157157.51,
+      "venta_2026": 166051.51,
+      "diferencial": 8894.0,
+      "uplift_pct": 5.6593
+    },
+    {
+      "sucursal": "OLIVAR",
+      "mes": "Abril",
+      "canal": "SALON",
+      "venta_2025": 349369.24,
+      "venta_2026": 360212.59,
+      "diferencial": 10843.35,
+      "uplift_pct": 3.1037
+    },
+    {
+      "sucursal": "OLIVAR",
+      "mes": "Mayo",
+      "canal": "UBER",
+      "venta_2025": 186495.01,
+      "venta_2026": 205294.35,
+      "diferencial": 18799.34,
+      "uplift_pct": 10.0803
+    },
+    {
+      "sucursal": "OLIVAR",
+      "mes": "Mayo",
+      "canal": "SALON",
+      "venta_2025": 329828.06,
+      "venta_2026": 339475.47,
+      "diferencial": 9647.41,
+      "uplift_pct": 2.925
+    },
+    {
+      "sucursal": "PARAGON",
+      "mes": "Enero",
+      "canal": "UBER",
+      "venta_2025": 206137.04,
+      "venta_2026": 217078.87,
+      "diferencial": 10941.83,
+      "uplift_pct": 5.308
+    },
+    {
+      "sucursal": "PARAGON",
+      "mes": "Enero",
+      "canal": "SALON",
+      "venta_2025": 275085.54,
+      "venta_2026": 287218.87,
+      "diferencial": 12133.33,
+      "uplift_pct": 4.4107
+    },
+    {
+      "sucursal": "PARAGON",
+      "mes": "Febrero",
+      "canal": "UBER",
+      "venta_2025": 218686.72,
+      "venta_2026": 233737.41,
+      "diferencial": 15050.69,
+      "uplift_pct": 6.8823
+    },
+    {
+      "sucursal": "PARAGON",
+      "mes": "Febrero",
+      "canal": "SALON",
+      "venta_2025": 269964.95,
+      "venta_2026": 282435.39,
+      "diferencial": 12470.44,
+      "uplift_pct": 4.6193
+    },
+    {
+      "sucursal": "PARAGON",
+      "mes": "Marzo",
+      "canal": "UBER",
+      "venta_2025": 243960.83,
+      "venta_2026": 261035.15,
+      "diferencial": 17074.32,
+      "uplift_pct": 6.9988
+    },
+    {
+      "sucursal": "PARAGON",
+      "mes": "Marzo",
+      "canal": "SALON",
+      "venta_2025": 311411.1,
+      "venta_2026": 325507.42,
+      "diferencial": 14096.32,
+      "uplift_pct": 4.5266
+    },
+    {
+      "sucursal": "PARAGON",
+      "mes": "Abril",
+      "canal": "UBER",
+      "venta_2025": 227683.77,
+      "venta_2026": 241503.37,
+      "diferencial": 13819.6,
+      "uplift_pct": 6.0696
+    },
+    {
+      "sucursal": "PARAGON",
+      "mes": "Abril",
+      "canal": "SALON",
+      "venta_2025": 327981.08,
+      "venta_2026": 337854.67,
+      "diferencial": 9873.59,
+      "uplift_pct": 3.0104
+    },
+    {
+      "sucursal": "PARAGON",
+      "mes": "Mayo",
+      "canal": "UBER",
+      "venta_2025": 229609.45,
+      "venta_2026": 251836.27,
+      "diferencial": 22226.82,
+      "uplift_pct": 9.6803
+    },
+    {
+      "sucursal": "PARAGON",
+      "mes": "Mayo",
+      "canal": "SALON",
+      "venta_2025": 343984.45,
+      "venta_2026": 353367.97,
+      "diferencial": 9383.52,
+      "uplift_pct": 2.7279
+    },
+    {
+      "sucursal": "PEDREGAL",
+      "mes": "Enero",
+      "canal": "UBER",
+      "venta_2025": 258808.97,
+      "venta_2026": 271547.22,
+      "diferencial": 12738.25,
+      "uplift_pct": 4.9219
+    },
+    {
+      "sucursal": "PEDREGAL",
+      "mes": "Enero",
+      "canal": "SALON",
+      "venta_2025": 1304350.93,
+      "venta_2026": 1340092.68,
+      "diferencial": 35741.75,
+      "uplift_pct": 2.7402
+    },
+    {
+      "sucursal": "PEDREGAL",
+      "mes": "Febrero",
+      "canal": "UBER",
+      "venta_2025": 240414.83,
+      "venta_2026": 255085.74,
+      "diferencial": 14670.91,
+      "uplift_pct": 6.1023
+    },
+    {
+      "sucursal": "PEDREGAL",
+      "mes": "Febrero",
+      "canal": "SALON",
+      "venta_2025": 1106851.05,
+      "venta_2026": 1135281.08,
+      "diferencial": 28430.03,
+      "uplift_pct": 2.5686
+    },
+    {
+      "sucursal": "PEDREGAL",
+      "mes": "Marzo",
+      "canal": "UBER",
+      "venta_2025": 278444.99,
+      "venta_2026": 296180.65,
+      "diferencial": 17735.66,
+      "uplift_pct": 6.3695
+    },
+    {
+      "sucursal": "PEDREGAL",
+      "mes": "Marzo",
+      "canal": "SALON",
+      "venta_2025": 1344616.39,
+      "venta_2026": 1376548.04,
+      "diferencial": 31931.65,
+      "uplift_pct": 2.3748
+    },
+    {
+      "sucursal": "PEDREGAL",
+      "mes": "Abril",
+      "canal": "UBER",
+      "venta_2025": 261154.21,
+      "venta_2026": 276720.5,
+      "diferencial": 15566.29,
+      "uplift_pct": 5.9606
+    },
+    {
+      "sucursal": "PEDREGAL",
+      "mes": "Abril",
+      "canal": "SALON",
+      "venta_2025": 1296697.84,
+      "venta_2026": 1325785.93,
+      "diferencial": 29088.09,
+      "uplift_pct": 2.2432
+    },
+    {
+      "sucursal": "PEDREGAL",
+      "mes": "Mayo",
+      "canal": "UBER",
+      "venta_2025": 317713.04,
+      "venta_2026": 351427.22,
+      "diferencial": 33714.18,
+      "uplift_pct": 10.6115
+    },
+    {
+      "sucursal": "PEDREGAL",
+      "mes": "Mayo",
+      "canal": "SALON",
+      "venta_2025": 1256722.51,
+      "venta_2026": 1283322.47,
+      "diferencial": 26599.96,
+      "uplift_pct": 2.1166
+    },
+    {
+      "sucursal": "POLANCO",
+      "mes": "Enero",
+      "canal": "UBER",
+      "venta_2025": 247945.43,
+      "venta_2026": 261338.38,
+      "diferencial": 13392.95,
+      "uplift_pct": 5.4016
+    },
+    {
+      "sucursal": "POLANCO",
+      "mes": "Enero",
+      "canal": "SALON",
+      "venta_2025": 332111.02,
+      "venta_2026": 343840.39,
+      "diferencial": 11729.37,
+      "uplift_pct": 3.5318
+    },
+    {
+      "sucursal": "POLANCO",
+      "mes": "Febrero",
+      "canal": "UBER",
+      "venta_2025": 208482.04,
+      "venta_2026": 221045.86,
+      "diferencial": 12563.82,
+      "uplift_pct": 6.0263
+    },
+    {
+      "sucursal": "POLANCO",
+      "mes": "Febrero",
+      "canal": "SALON",
+      "venta_2025": 330742.23,
+      "venta_2026": 344609.79,
+      "diferencial": 13867.56,
+      "uplift_pct": 4.1929
+    },
+    {
+      "sucursal": "POLANCO",
+      "mes": "Marzo",
+      "canal": "UBER",
+      "venta_2025": 239120.94,
+      "venta_2026": 255735.84,
+      "diferencial": 16614.9,
+      "uplift_pct": 6.9483
+    },
+    {
+      "sucursal": "POLANCO",
+      "mes": "Marzo",
+      "canal": "SALON",
+      "venta_2025": 322721.85,
+      "venta_2026": 335196.0,
+      "diferencial": 12474.15,
+      "uplift_pct": 3.8653
+    },
+    {
+      "sucursal": "POLANCO",
+      "mes": "Abril",
+      "canal": "UBER",
+      "venta_2025": 216458.37,
+      "venta_2026": 231099.75,
+      "diferencial": 14641.38,
+      "uplift_pct": 6.7641
+    },
+    {
+      "sucursal": "POLANCO",
+      "mes": "Abril",
+      "canal": "SALON",
+      "venta_2025": 358130.01,
+      "venta_2026": 373210.28,
+      "diferencial": 15080.27,
+      "uplift_pct": 4.2108
+    },
+    {
+      "sucursal": "POLANCO",
+      "mes": "Mayo",
+      "canal": "UBER",
+      "venta_2025": 287994.83,
+      "venta_2026": 321216.39,
+      "diferencial": 33221.56,
+      "uplift_pct": 11.5355
+    },
+    {
+      "sucursal": "POLANCO",
+      "mes": "Mayo",
+      "canal": "SALON",
+      "venta_2025": 369240.15,
+      "venta_2026": 381630.51,
+      "diferencial": 12390.36,
+      "uplift_pct": 3.3556
+    },
+    {
+      "sucursal": "REVOLUCION",
+      "mes": "Enero",
+      "canal": "UBER",
+      "venta_2025": 213528.8,
+      "venta_2026": 224784.64,
+      "diferencial": 11255.84,
+      "uplift_pct": 5.2713
+    },
+    {
+      "sucursal": "REVOLUCION",
+      "mes": "Enero",
+      "canal": "SALON",
+      "venta_2025": 242750.15,
+      "venta_2026": 260767.15,
+      "diferencial": 18017.0,
+      "uplift_pct": 7.422
+    },
+    {
+      "sucursal": "REVOLUCION",
+      "mes": "Febrero",
+      "canal": "UBER",
+      "venta_2025": 173677.97,
+      "venta_2026": 184981.11,
+      "diferencial": 11303.14,
+      "uplift_pct": 6.5081
+    },
+    {
+      "sucursal": "REVOLUCION",
+      "mes": "Febrero",
+      "canal": "SALON",
+      "venta_2025": 211916.08,
+      "venta_2026": 230544.96,
+      "diferencial": 18628.88,
+      "uplift_pct": 8.7907
+    },
+    {
+      "sucursal": "REVOLUCION",
+      "mes": "Marzo",
+      "canal": "UBER",
+      "venta_2025": 247050.0,
+      "venta_2026": 263404.82,
+      "diferencial": 16354.82,
+      "uplift_pct": 6.62
+    },
+    {
+      "sucursal": "REVOLUCION",
+      "mes": "Marzo",
+      "canal": "SALON",
+      "venta_2025": 236496.89,
+      "venta_2026": 255233.2,
+      "diferencial": 18736.31,
+      "uplift_pct": 7.9224
+    },
+    {
+      "sucursal": "REVOLUCION",
+      "mes": "Abril",
+      "canal": "UBER",
+      "venta_2025": 196350.74,
+      "venta_2026": 209291.18,
+      "diferencial": 12940.44,
+      "uplift_pct": 6.5905
+    },
+    {
+      "sucursal": "REVOLUCION",
+      "mes": "Abril",
+      "canal": "SALON",
+      "venta_2025": 209733.35,
+      "venta_2026": 229606.9,
+      "diferencial": 19873.55,
+      "uplift_pct": 9.4756
+    },
+    {
+      "sucursal": "REVOLUCION",
+      "mes": "Mayo",
+      "canal": "UBER",
+      "venta_2025": 225941.02,
+      "venta_2026": 249898.44,
+      "diferencial": 23957.42,
+      "uplift_pct": 10.6034
+    },
+    {
+      "sucursal": "REVOLUCION",
+      "mes": "Mayo",
+      "canal": "SALON",
+      "venta_2025": 233057.72,
+      "venta_2026": 252857.08,
+      "diferencial": 19799.36,
+      "uplift_pct": 8.4955
+    },
+    {
+      "sucursal": "SAN JERONIMO",
+      "mes": "Enero",
+      "canal": "UBER",
+      "venta_2025": 141291.74,
+      "venta_2026": 148588.34,
+      "diferencial": 7296.6,
+      "uplift_pct": 5.1642
+    },
+    {
+      "sucursal": "SAN JERONIMO",
+      "mes": "Enero",
+      "canal": "SALON",
+      "venta_2025": 349573.0,
+      "venta_2026": 360925.52,
+      "diferencial": 11352.52,
+      "uplift_pct": 3.2475
+    },
+    {
+      "sucursal": "SAN JERONIMO",
+      "mes": "Febrero",
+      "canal": "UBER",
+      "venta_2025": 143106.45,
+      "venta_2026": 152056.6,
+      "diferencial": 8950.15,
+      "uplift_pct": 6.2542
+    },
+    {
+      "sucursal": "SAN JERONIMO",
+      "mes": "Febrero",
+      "canal": "SALON",
+      "venta_2025": 294653.98,
+      "venta_2026": 303145.56,
+      "diferencial": 8491.58,
+      "uplift_pct": 2.8819
+    },
+    {
+      "sucursal": "SAN JERONIMO",
+      "mes": "Marzo",
+      "canal": "UBER",
+      "venta_2025": 167931.2,
+      "venta_2026": 178993.87,
+      "diferencial": 11062.67,
+      "uplift_pct": 6.5876
+    },
+    {
+      "sucursal": "SAN JERONIMO",
+      "mes": "Marzo",
+      "canal": "SALON",
+      "venta_2025": 381047.33,
+      "venta_2026": 391641.67,
+      "diferencial": 10594.34,
+      "uplift_pct": 2.7803
+    },
+    {
+      "sucursal": "SAN JERONIMO",
+      "mes": "Abril",
+      "canal": "UBER",
+      "venta_2025": 140944.49,
+      "venta_2026": 151078.33,
+      "diferencial": 10133.84,
+      "uplift_pct": 7.19
+    },
+    {
+      "sucursal": "SAN JERONIMO",
+      "mes": "Abril",
+      "canal": "SALON",
+      "venta_2025": 338803.3,
+      "venta_2026": 348347.3,
+      "diferencial": 9544.0,
+      "uplift_pct": 2.817
+    },
+    {
+      "sucursal": "SAN JERONIMO",
+      "mes": "Mayo",
+      "canal": "UBER",
+      "venta_2025": 177802.43,
+      "venta_2026": 196280.46,
+      "diferencial": 18478.03,
+      "uplift_pct": 10.3925
+    },
+    {
+      "sucursal": "SAN JERONIMO",
+      "mes": "Mayo",
+      "canal": "SALON",
+      "venta_2025": 391861.14,
+      "venta_2026": 403231.68,
+      "diferencial": 11370.54,
+      "uplift_pct": 2.9017
+    },
+    {
+      "sucursal": "SANTA FE",
+      "mes": "Enero",
+      "canal": "UBER",
+      "venta_2025": 206415.36,
+      "venta_2026": 217926.31,
+      "diferencial": 11510.95,
+      "uplift_pct": 5.5766
+    },
+    {
+      "sucursal": "SANTA FE",
+      "mes": "Enero",
+      "canal": "SALON",
+      "venta_2025": 490690.68,
+      "venta_2026": 501907.25,
+      "diferencial": 11216.57,
+      "uplift_pct": 2.2859
+    },
+    {
+      "sucursal": "SANTA FE",
+      "mes": "Febrero",
+      "canal": "UBER",
+      "venta_2025": 177972.9,
+      "venta_2026": 189826.78,
+      "diferencial": 11853.88,
+      "uplift_pct": 6.6605
+    },
+    {
+      "sucursal": "SANTA FE",
+      "mes": "Febrero",
+      "canal": "SALON",
+      "venta_2025": 472565.89,
+      "venta_2026": 483089.33,
+      "diferencial": 10523.44,
+      "uplift_pct": 2.2269
+    },
+    {
+      "sucursal": "SANTA FE",
+      "mes": "Marzo",
+      "canal": "UBER",
+      "venta_2025": 176260.62,
+      "venta_2026": 190224.4,
+      "diferencial": 13963.78,
+      "uplift_pct": 7.9222
+    },
+    {
+      "sucursal": "SANTA FE",
+      "mes": "Marzo",
+      "canal": "SALON",
+      "venta_2025": 552546.89,
+      "venta_2026": 564130.85,
+      "diferencial": 11583.96,
+      "uplift_pct": 2.0965
+    },
+    {
+      "sucursal": "SANTA FE",
+      "mes": "Abril",
+      "canal": "UBER",
+      "venta_2025": 166726.46,
+      "venta_2026": 177714.47,
+      "diferencial": 10988.01,
+      "uplift_pct": 6.5904
+    },
+    {
+      "sucursal": "SANTA FE",
+      "mes": "Abril",
+      "canal": "SALON",
+      "venta_2025": 566837.0,
+      "venta_2026": 580063.58,
+      "diferencial": 13226.58,
+      "uplift_pct": 2.3334
+    },
+    {
+      "sucursal": "SANTA FE",
+      "mes": "Mayo",
+      "canal": "UBER",
+      "venta_2025": 214250.87,
+      "venta_2026": 238128.15,
+      "diferencial": 23877.28,
+      "uplift_pct": 11.1445
+    },
+    {
+      "sucursal": "SANTA FE",
+      "mes": "Mayo",
+      "canal": "SALON",
+      "venta_2025": 565510.85,
+      "venta_2026": 577774.11,
+      "diferencial": 12263.26,
+      "uplift_pct": 2.1685
+    },
+    {
+      "sucursal": "SANTA TERESA",
+      "mes": "Enero",
+      "canal": "UBER",
+      "venta_2025": 144929.83,
+      "venta_2026": 152049.48,
+      "diferencial": 7119.65,
+      "uplift_pct": 4.9125
+    },
+    {
+      "sucursal": "SANTA TERESA",
+      "mes": "Enero",
+      "canal": "SALON",
+      "venta_2025": 191222.98,
+      "venta_2026": 198954.38,
+      "diferencial": 7731.4,
+      "uplift_pct": 4.0431
+    },
+    {
+      "sucursal": "SANTA TERESA",
+      "mes": "Febrero",
+      "canal": "UBER",
+      "venta_2025": 130653.42,
+      "venta_2026": 137632.91,
+      "diferencial": 6979.49,
+      "uplift_pct": 5.342
+    },
+    {
+      "sucursal": "SANTA TERESA",
+      "mes": "Febrero",
+      "canal": "SALON",
+      "venta_2025": 214444.4,
+      "venta_2026": 224174.78,
+      "diferencial": 9730.38,
+      "uplift_pct": 4.5375
+    },
+    {
+      "sucursal": "SANTA TERESA",
+      "mes": "Marzo",
+      "canal": "UBER",
+      "venta_2025": 158303.28,
+      "venta_2026": 168084.64,
+      "diferencial": 9781.36,
+      "uplift_pct": 6.1789
+    },
+    {
+      "sucursal": "SANTA TERESA",
+      "mes": "Marzo",
+      "canal": "SALON",
+      "venta_2025": 241940.74,
+      "venta_2026": 251305.12,
+      "diferencial": 9364.38,
+      "uplift_pct": 3.8705
+    },
+    {
+      "sucursal": "SANTA TERESA",
+      "mes": "Abril",
+      "canal": "UBER",
+      "venta_2025": 144205.59,
+      "venta_2026": 152738.99,
+      "diferencial": 8533.4,
+      "uplift_pct": 5.9175
+    },
+    {
+      "sucursal": "SANTA TERESA",
+      "mes": "Abril",
+      "canal": "SALON",
+      "venta_2025": 204446.01,
+      "venta_2026": 212274.15,
+      "diferencial": 7828.14,
+      "uplift_pct": 3.829
+    },
+    {
+      "sucursal": "SANTA TERESA",
+      "mes": "Mayo",
+      "canal": "UBER",
+      "venta_2025": 180955.29,
+      "venta_2026": 198735.94,
+      "diferencial": 17780.65,
+      "uplift_pct": 9.826
+    },
+    {
+      "sucursal": "SANTA TERESA",
+      "mes": "Mayo",
+      "canal": "SALON",
+      "venta_2025": 233166.97,
+      "venta_2026": 242685.03,
+      "diferencial": 9518.06,
+      "uplift_pct": 4.0821
+    },
+    {
+      "sucursal": "TLALPAN",
+      "mes": "Enero",
+      "canal": "UBER",
+      "venta_2025": 264311.35,
+      "venta_2026": 287622.16,
+      "diferencial": 23310.81,
+      "uplift_pct": 8.8195
+    },
+    {
+      "sucursal": "TLALPAN",
+      "mes": "Enero",
+      "canal": "SALON",
+      "venta_2025": 291107.64,
+      "venta_2026": 308451.16,
+      "diferencial": 17343.52,
+      "uplift_pct": 5.9578
+    },
+    {
+      "sucursal": "TLALPAN",
+      "mes": "Febrero",
+      "canal": "UBER",
+      "venta_2025": 224217.37,
+      "venta_2026": 244553.79,
+      "diferencial": 20336.42,
+      "uplift_pct": 9.07
+    },
+    {
+      "sucursal": "TLALPAN",
+      "mes": "Febrero",
+      "canal": "SALON",
+      "venta_2025": 303362.3,
+      "venta_2026": 323738.95,
+      "diferencial": 20376.65,
+      "uplift_pct": 6.7169
+    },
+    {
+      "sucursal": "TLALPAN",
+      "mes": "Marzo",
+      "canal": "UBER",
+      "venta_2025": 281223.98,
+      "venta_2026": 306773.93,
+      "diferencial": 25549.95,
+      "uplift_pct": 9.0853
+    },
+    {
+      "sucursal": "TLALPAN",
+      "mes": "Marzo",
+      "canal": "SALON",
+      "venta_2025": 297044.25,
+      "venta_2026": 315866.12,
+      "diferencial": 18821.87,
+      "uplift_pct": 6.3364
+    },
+    {
+      "sucursal": "TLALPAN",
+      "mes": "Abril",
+      "canal": "UBER",
+      "venta_2025": 237546.03,
+      "venta_2026": 259367.93,
+      "diferencial": 21821.9,
+      "uplift_pct": 9.1864
+    },
+    {
+      "sucursal": "TLALPAN",
+      "mes": "Abril",
+      "canal": "SALON",
+      "venta_2025": 280815.55,
+      "venta_2026": 298616.38,
+      "diferencial": 17800.83,
+      "uplift_pct": 6.339
+    },
+    {
+      "sucursal": "TLALPAN",
+      "mes": "Mayo",
+      "canal": "UBER",
+      "venta_2025": 305379.57,
+      "venta_2026": 339798.19,
+      "diferencial": 34418.62,
+      "uplift_pct": 11.2708
+    },
+    {
+      "sucursal": "TLALPAN",
+      "mes": "Mayo",
+      "canal": "SALON",
+      "venta_2025": 325809.16,
+      "venta_2026": 344595.43,
+      "diferencial": 18786.27,
+      "uplift_pct": 5.766
+    }
+  ]
+}

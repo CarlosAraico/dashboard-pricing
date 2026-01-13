@@ -1,0 +1,51 @@
+# OS junk
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Temp/cache
+*.tmp
+*.temp
+.tmp/
+tmp/
+temp/
+.cache/
+
+# Build output (none expected, but ignore if appears)
+dist/
+build/
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env*
+venv/
+.venv/
+env/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+!.vscode/settings.json
+
+# Coverage / misc
+coverage/
+*.cover
+*.gcov
+
+# Do NOT ignore exports data
+# (keep ./exports/derived_jan_may_2025_2026.json tracked)

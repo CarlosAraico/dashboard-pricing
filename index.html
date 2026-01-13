@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+<link rel="icon" href="data:,">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dashboard Pricing | Jan–May 2025 vs 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: { fontFamily: { sans: ["ui-sans-serif", "system-ui"] } },
+        },
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900"
+  >
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <header
+        class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"
+      >
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight">
+            Pricing Uplift · Jan–May
+          </h1>
+          <p class="text-sm text-slate-600">
+            Comparativo <span class="font-medium">Precio actual (2025)</span> vs
+            <span class="font-medium">Precio nuevo (2026)</span> · Supuesto:
+            mismo volumen
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <div
+            class="text-xs text-slate-600 bg-white/70 backdrop-blur ring-1 ring-slate-200 rounded-xl px-3 py-2 shadow-lg"
+          >
+            <div class="font-medium">Último refresh</div>
+            <div id="lastRefresh">—</div>
+          </div>
+          <div
+            class="text-xs text-slate-600 bg-white/70 backdrop-blur ring-1 ring-slate-200 rounded-xl px-3 py-2 shadow-lg"
+          >
+            <div class="font-medium">Versión de datos</div>
+            <div id="dataVersion">—</div>
+          </div>
+        </div>
+      </header>
+
+      <section class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div
+          class="lg:col-span-12 bg-white/70 backdrop-blur ring-1 ring-slate-200 rounded-2xl shadow-lg p-4 hover:-translate-y-0.5 hover:shadow-xl transition"
+        >
+          <div
+            class="flex flex-col md:flex-row md:items-end md:justify-between gap-3"
+          >
+            <div class="flex flex-wrap gap-2">
+              <div class="flex flex-col">
+                <label class="text-xs font-medium text-slate-600"
+                  >Sucursal</label
+                >
+                <select
+                  id="fSucursal"
+                  class="mt-1 rounded-xl border-slate-200 bg-white/80 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300"
+                ></select>
+              </div>
+              <div class="flex flex-col">
+                <label class="text-xs font-medium text-slate-600">Mes</label>
+                <select
+                  id="fMes"
+                  class="mt-1 rounded-xl border-slate-200 bg-white/80 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300"
+                ></select>
+              </div>
+              <div class="flex flex-col">
+                <label class="text-xs font-medium text-slate-600">Canal</label>
+                <select
+                  id="fCanal"
+                  class="mt-1 rounded-xl border-slate-200 bg-white/80 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300"
+                ></select>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button
+                id="toggleView"
+                class="rounded-xl bg-slate-900 text-white px-4 py-2 text-sm shadow-lg hover:-translate-y-0.5 hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-slate-300"
+                title="Alterna $ vs % en tablas/gráficos"
+              >
+                Ver: $
+              </button>
+              <button
+                id="btnExportJSON"
+                class="rounded-xl bg-white/80 ring-1 ring-slate-200 px-4 py-2 text-sm shadow-lg hover:-translate-y-0.5 hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-slate-300"
+              >
+                Exportar vista (JSON)
+              </button>
+              <button
+                id="btnExportCSV"
+                class="rounded-xl bg-white/80 ring-1 ring-slate-200 px-4 py-2 text-sm shadow-lg hover:-translate-y-0.5 hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-slate-300"
+              >
+                Exportar vista (CSV)
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="mt-4 grid grid-cols-1 md:grid-cols-4 gap-3"
+            id="kpiCards"
+          ></div>
+        </div>
+
+        <div
+          class="lg:col-span-4 bg-white/70 backdrop-blur ring-1 ring-slate-200 rounded-2xl shadow-lg p-4 hover:-translate-y-0.5 hover:shadow-xl transition"
+        >
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold">Split por canal</h2>
+            <span
+              class="text-xs text-slate-600"
+              title="Mix = Venta 2025 % · Contrib. uplift = % del diferencial total"
+              >Mix / Contrib.</span
+            >
+          </div>
+          <div class="mt-3">
+            <canvas id="chartCanal" height="180"></canvas>
+          </div>
+          <div class="mt-4 overflow-auto">
+            <table class="w-full text-sm">
+              <thead class="text-xs text-slate-600">
+                <tr>
+                  <th class="text-left py-2">Canal</th>
+                  <th class="text-right py-2">Venta 2025</th>
+                  <th class="text-right py-2">Dif. $</th>
+                  <th class="text-right py-2">Uplift %</th>
+                  <th class="text-right py-2">% uplift</th>
+                </tr>
+              </thead>
+              <tbody id="tblCanal" class="divide-y divide-slate-200"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div
+          class="lg:col-span-8 bg-white/70 backdrop-blur ring-1 ring-slate-200 rounded-2xl shadow-lg p-4 hover:-translate-y-0.5 hover:shadow-xl transition"
+        >
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold">Tendencia mensual</h2>
+            <span class="text-xs text-slate-600">Highlight: Mayo</span>
+          </div>
+          <div class="mt-3">
+            <canvas id="chartMensual" height="180"></canvas>
+          </div>
+          <div class="mt-4 overflow-auto">
+            <table class="w-full text-sm">
+              <thead class="text-xs text-slate-600">
+                <tr>
+                  <th class="text-left py-2">Mes</th>
+                  <th class="text-right py-2">Venta 2025</th>
+                  <th class="text-right py-2">Dif. $</th>
+                  <th class="text-right py-2">Uplift %</th>
+                </tr>
+              </thead>
+              <tbody id="tblMensual" class="divide-y divide-slate-200"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div
+          class="lg:col-span-7 bg-white/70 backdrop-blur ring-1 ring-slate-200 rounded-2xl shadow-lg p-4 hover:-translate-y-0.5 hover:shadow-xl transition"
+        >
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold">Ranking por sucursal</h2>
+            <span class="text-xs text-slate-600"
+              >Impacto $ vs Sensibilidad %</span
+            >
+          </div>
+          <div class="mt-4 overflow-auto">
+            <table class="w-full text-sm">
+              <thead class="text-xs text-slate-600">
+                <tr>
+                  <th
+                    class="text-left py-2 cursor-pointer"
+                    data-sort="sucursal"
+                  >
+                    Sucursal
+                  </th>
+                  <th
+                    class="text-right py-2 cursor-pointer"
+                    data-sort="venta_2025"
+                  >
+                    Venta 2025
+                  </th>
+                  <th
+                    class="text-right py-2 cursor-pointer"
+                    data-sort="diferencial"
+                  >
+                    Dif. $
+                  </th>
+                  <th
+                    class="text-right py-2 cursor-pointer"
+                    data-sort="uplift_pct"
+                  >
+                    Uplift %
+                  </th>
+                  <th
+                    class="text-right py-2 cursor-pointer"
+                    data-sort="mix_uber_2025"
+                  >
+                    Mix UBER
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="tblSucursal" class="divide-y divide-slate-200"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div
+          class="lg:col-span-5 bg-white/70 backdrop-blur ring-1 ring-slate-200 rounded-2xl shadow-lg p-4 hover:-translate-y-0.5 hover:shadow-xl transition"
+        >
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold">Matriz de sensibilidad</h2>
+            <span class="text-xs text-slate-600"
+              >X: Mix UBER · Y: Uplift %</span
+            >
+          </div>
+          <div class="mt-3">
+            <canvas id="chartScatter" height="220"></canvas>
+          </div>
+          <div class="mt-3 text-xs text-slate-600">
+            <div>
+              <span class="font-medium">Corr (Mix vs Uplift):</span>
+              <span id="corrTxt">—</span>
+            </div>
+            <div class="mt-1">Líneas: medianas (cuadrantes).</div>
+          </div>
+        </div>
+
+        <div
+          class="lg:col-span-12 bg-white/70 backdrop-blur ring-1 ring-slate-200 rounded-2xl shadow-lg p-4 hover:-translate-y-0.5 hover:shadow-xl transition"
+        >
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold">Drill-down · Top 5 por mes y canal</h2>
+            <span class="text-xs text-slate-600"
+              >Ordenado por Diferencial $</span
+            >
+          </div>
+          <div class="mt-4 overflow-auto">
+            <table class="w-full text-sm">
+              <thead class="text-xs text-slate-600">
+                <tr>
+                  <th class="text-left py-2">Mes</th>
+                  <th class="text-left py-2">Canal</th>
+                  <th class="text-left py-2">Sucursal</th>
+                  <th class="text-right py-2">Venta 2025</th>
+                  <th class="text-right py-2">Dif. $</th>
+                  <th class="text-right py-2">Uplift %</th>
+                </tr>
+              </thead>
+              <tbody id="tblDrill" class="divide-y divide-slate-200"></tbody>
+            </table>
+          </div>
+          <p class="mt-3 text-xs text-slate-500">
+            Integridad: este dashboard consume únicamente
+            <code>/exports/derived_jan_may_2025_2026.json</code> (vistas
+            derivadas). No hay escritura al origen.
+          </p>
+        </div>
+      </section>
+
+      <footer class="mt-8 text-xs text-slate-500">
+        <div>
+          READ_ONLY_MODE activado · Sin endpoints de escritura · Exporta solo
+          derivados.
+        </div>
+      </footer>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
