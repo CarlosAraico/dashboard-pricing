@@ -14,9 +14,7 @@
       theme: {
         extend: {
           fontFamily: { sans: ['ui-sans-serif','system-ui','Segoe UI','Roboto','Arial'] },
-          boxShadow: {
-            soft3d: '0 12px 30px -18px rgba(2,6,23,.45), 0 2px 8px -6px rgba(2,6,23,.25)'
-          }
+          boxShadow: { soft3d: '0 12px 30px -18px rgba(2,6,23,.45), 0 2px 8px -6px rgba(2,6,23,.25)' }
         }
       }
     }
@@ -34,7 +32,7 @@
             Comparativo de ventas TDM 2025 vs 2026 · Enero–Mayo
           </h1>
           <p class="text-sm text-slate-600 dark:text-slate-300">
-            Supuesto: <span class="font-medium">mismo volumen</span> (cambio solo por precio) · Vista ejecutiva
+            Supuesto: <span class="font-medium">mismo volumen</span> (cambio solo por precio)
           </p>
         </div>
 
@@ -92,7 +90,7 @@
           <div class="flex items-center gap-2">
             <button id="toggleView"
               class="rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600"
-              title="Alterna $ vs % en tablas (ranking se mantiene por $ por defecto)">
+              title="Alterna $ vs % (visual)">
               Ver: $
             </button>
 
@@ -104,13 +102,13 @@
 
             <button id="btnExportJSON"
               class="rounded-xl bg-white/80 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600"
-              title="Descarga solo la vista derivada (no el origen)">
+              title="Descarga solo vista derivada">
               Export JSON
             </button>
 
             <button id="btnExportCSV"
               class="rounded-xl bg-white/80 dark:bg-slate-950/30 ring-1 ring-slate-200 dark:ring-slate-700 px-4 py-2 text-sm shadow-soft3d hover:-translate-y-0.5 hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600"
-              title="Descarga solo la vista derivada (no el origen)">
+              title="Descarga solo vista derivada">
               Export CSV
             </button>
           </div>
@@ -123,19 +121,59 @@
 
         <div class="mt-4 grid grid-cols-1 md:grid-cols-4 gap-3" id="kpiCards"></div>
       </section>
+
+      <!-- Executive strip: 3 cards -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-2">
+        <!-- Red Flags -->
+        <div class="lg:col-span-6 bg-rose-50/70 dark:bg-rose-950/25 backdrop-blur ring-1 ring-rose-200/70 dark:ring-rose-800/40 rounded-2xl shadow-soft3d p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
+          <div class="flex items-center gap-2">
+            <span class="text-rose-700 dark:text-rose-200">🚩</span>
+            <h2 class="font-semibold text-rose-800 dark:text-rose-100">Banderas Rojas (Alertas)</h2>
+          </div>
+          <ol id="redFlagsList" class="mt-4 space-y-3 text-sm text-rose-900 dark:text-rose-100"></ol>
+          <div id="redFlagsEmpty" class="mt-4 text-sm text-rose-800/80 dark:text-rose-200/80 hidden">
+            Sin alertas con los filtros actuales.
+          </div>
+        </div>
+
+        <!-- Action plan -->
+        <div class="lg:col-span-6 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
+          <div class="flex items-center gap-2">
+            <span class="text-amber-600 dark:text-amber-200">⚡</span>
+            <h2 class="font-semibold">Plan de Acción Inmediato</h2>
+          </div>
+          <div id="actionPlanList" class="mt-4 space-y-3"></div>
+        </div>
+
+        <!-- Ranking -->
+        <div class="lg:col-span-12 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-5 hover:-translate-y-0.5 hover:shadow-lg transition">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div>
+              <h2 class="font-semibold">Ranking de Sucursales</h2>
+              <p class="text-sm text-slate-600 dark:text-slate-300">Prioridad de acción · Top 5</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400" id="concentrationTxt">—</p>
+            </div>
+
+            <div class="inline-flex rounded-xl ring-1 ring-slate-200 dark:ring-slate-700 bg-white/70 dark:bg-slate-950/30 p-1 shadow-soft3d">
+              <button id="rankImpactBtn" class="px-3 py-1.5 text-sm rounded-lg transition">Impacto ($)</button>
+              <button id="rankSensBtn" class="px-3 py-1.5 text-sm rounded-lg transition">Sensibilidad (%)</button>
+            </div>
+          </div>
+
+          <div class="mt-4 space-y-3" id="rankingList"></div>
+        </div>
+      </section>
     </header>
 
-    <!-- Content -->
+    <!-- Main content -->
     <section class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-4">
       <!-- Canal -->
       <div class="lg:col-span-4 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 hover:-translate-y-0.5 hover:shadow-lg transition">
         <div class="flex items-center justify-between">
           <h2 class="font-semibold">Motor del uplift</h2>
-          <span class="text-xs text-slate-600 dark:text-slate-300" title="Mix = Venta 2025 % · Contrib. uplift = % del diferencial total">UBER vs SALON</span>
+          <span class="text-xs text-slate-600 dark:text-slate-300">UBER vs SALON</span>
         </div>
-        <div class="mt-3">
-          <canvas id="chartCanal" height="180"></canvas>
-        </div>
+        <div class="mt-3"><canvas id="chartCanal" height="180"></canvas></div>
         <div class="mt-4 overflow-auto">
           <table class="w-full text-sm">
             <thead class="text-xs text-slate-600 dark:text-slate-300 sticky top-0 bg-white/80 dark:bg-slate-950/30">
@@ -158,9 +196,7 @@
           <h2 class="font-semibold">Tendencia mensual</h2>
           <span class="text-xs text-slate-600 dark:text-slate-300">Highlight: Mayo</span>
         </div>
-        <div class="mt-3">
-          <canvas id="chartMensual" height="180"></canvas>
-        </div>
+        <div class="mt-3"><canvas id="chartMensual" height="180"></canvas></div>
         <div class="mt-4 overflow-auto">
           <table class="w-full text-sm">
             <thead class="text-xs text-slate-600 dark:text-slate-300 sticky top-0 bg-white/80 dark:bg-slate-950/30">
@@ -176,7 +212,7 @@
         </div>
       </div>
 
-      <!-- Ranking -->
+      <!-- Ranking table -->
       <div class="lg:col-span-7 bg-white/70 dark:bg-slate-900/60 backdrop-blur ring-1 ring-slate-200 dark:ring-slate-700 rounded-2xl shadow-soft3d p-4 hover:-translate-y-0.5 hover:shadow-lg transition">
         <div class="flex items-center justify-between">
           <h2 class="font-semibold">Ranking por sucursal</h2>
@@ -186,11 +222,11 @@
           <table class="w-full text-sm">
             <thead class="text-xs text-slate-600 dark:text-slate-300 sticky top-0 bg-white/80 dark:bg-slate-950/30">
               <tr>
-                <th class="text-left py-2 cursor-pointer" data-sort="sucursal" title="Ordena por sucursal">Sucursal</th>
-                <th class="text-right py-2 cursor-pointer" data-sort="venta_2025" title="Ordena por venta base">Venta 2025</th>
-                <th class="text-right py-2 cursor-pointer" data-sort="diferencial" title="Ordena por uplift $">Dif. $</th>
-                <th class="text-right py-2 cursor-pointer" data-sort="uplift_pct" title="Ordena por uplift %">Uplift %</th>
-                <th class="text-right py-2 cursor-pointer" data-sort="mix_uber_2025" title="Ordena por mix UBER">Mix UBER</th>
+                <th class="text-left py-2 cursor-pointer" data-sort="sucursal">Sucursal</th>
+                <th class="text-right py-2 cursor-pointer" data-sort="venta_2025">Venta 2025</th>
+                <th class="text-right py-2 cursor-pointer" data-sort="diferencial">Dif. $</th>
+                <th class="text-right py-2 cursor-pointer" data-sort="uplift_pct">Uplift %</th>
+                <th class="text-right py-2 cursor-pointer" data-sort="mix_uber_2025">Mix UBER</th>
               </tr>
             </thead>
             <tbody id="tblSucursal" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
@@ -204,9 +240,7 @@
           <h2 class="font-semibold">Sensibilidad (proxy)</h2>
           <span class="text-xs text-slate-600 dark:text-slate-300">Mix UBER vs uplift%</span>
         </div>
-        <div class="mt-3">
-          <canvas id="chartScatter" height="220"></canvas>
-        </div>
+        <div class="mt-3"><canvas id="chartScatter" height="220"></canvas></div>
         <div class="mt-3 text-xs text-slate-600 dark:text-slate-300">
           <div><span class="font-medium">Corr (Mix vs Uplift):</span> <span id="corrTxt">—</span></div>
           <div class="mt-1">Líneas: medianas (cuadrantes).</div>
@@ -236,18 +270,18 @@
         </div>
 
         <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">
-          READ_ONLY_MODE activado · La app consume únicamente <code>/exports/derived_jan_may_2025_2026.json</code>.
+          READ_ONLY_MODE activado · Consumo exclusivo de <code>/exports/derived_jan_may_2025_2026.json</code>.
         </p>
       </div>
     </section>
 
-    <footer class="mt-8 text-xs text-slate-500 dark:text-slate-400">
-      <div>Tip: usa filtros para narrativa ejecutiva por canal/mes/sucursal.</div>
+    <footer class="mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
+      <div>© <span id="footerYear"></span> Grupo Araico</div>
+      <div class="opacity-80">Dashboard ejecutivo · Pricing uplift (solo lectura)</div>
     </footer>
   </div>
 
   <style>
-    /* Zebra + hover (no destructivo, solo visual) */
     tbody.zebra tr:nth-child(odd) { background: rgba(2,6,23,0.03); }
     html.dark tbody.zebra tr:nth-child(odd) { background: rgba(255,255,255,0.04); }
     tbody.zebra tr:hover { filter: brightness(0.98); }
