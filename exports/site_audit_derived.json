@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "generated_at": "2026-01-13T22:25:26.530Z",
+    "source": "site_audit_raw.json",
+    "note": "Vista derivada (read-only). No modifica BD."
+  },
+  "overview": {
+    "is_up": false,
+    "response_code": null,
+    "response_time_ms": null,
+    "server": null,
+    "cache_status": null,
+    "cf_ray": null,
+    "hsts_header_present": false,
+    "hsts_preload_compatible": false,
+    "hsts_message": null,
+    "waf": {
+      "has_waf": false,
+      "vendor": null
+    },
+    "robots": null,
+    "title": null,
+    "description": null
+  },
+  "tls": {
+    "cn": null,
+    "issuer_cn": null,
+    "issuer_o": null,
+    "valid_from": null,
+    "valid_to": null,
+    "bits": null,
+    "curve": null,
+    "fingerprint256": null,
+    "subject_alt_name": null
+  },
+  "dns": {
+    "a": null,
+    "aaaa": [],
+    "soa": [],
+    "mx": []
+  },
+  "security_headers": {
+    "strict_transport_security": false,
+    "x_frame_options": false,
+    "x_content_type_options": false,
+    "x_xss_protection": false,
+    "content_security_policy": false
+  },
+  "risks": [
+    {
+      "level": "high",
+      "title": "Sitio no disponible",
+      "why": "status.isUp=false",
+      "action": "Revisar DNS/Pages/Workers y reglas de firewall."
+    },
+    {
+      "level": "med",
+      "title": "Falta X-Frame-Options",
+      "why": "Protege clickjacking",
+      "action": "Definir X-Frame-Options o CSP frame-ancestors (en el origen)."
+    },
+    {
+      "level": "low",
+      "title": "Falta X-Content-Type-Options",
+      "why": "Evita MIME sniffing",
+      "action": "Agregar X-Content-Type-Options: nosniff."
+    },
+    {
+      "level": "med",
+      "title": "Sin Content-Security-Policy",
+      "why": "Reduce riesgo XSS",
+      "action": "Definir CSP mínimo (script-src, frame-ancestors, base-uri)."
+    },
+    {
+      "level": "med",
+      "title": "HSTS no presente",
+      "why": "Forzar HTTPS",
+      "action": "Agregar Strict-Transport-Security."
+    }
+  ]
+}

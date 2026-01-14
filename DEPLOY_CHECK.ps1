@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param()
 
 Set-StrictMode -Version Latest
@@ -9,6 +9,10 @@ $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $required = @(
   "index.html",
   "app.js",
+  "modules/config.js",
+  "modules/data.js",
+  "modules/dom.js",
+  "modules/format.js",
   "exports/derived_jan_may_2025_2026.json"
 )
 
@@ -25,16 +29,15 @@ if ($missing.Count -gt 0) {
 }
 
 # Verifica DATA_URL
-$app = Get-Content (Join-Path $root "app.js") -Raw
-if ($app -notmatch 'DATA_URL\s*=\s*["\'']\.\/exports\/derived_jan_may_2025_2026\.json["\'']') {
-  Write-Host "ERROR: app.js no apunta a ./exports/derived_jan_may_2025_2026.json" -ForegroundColor Red
+$config = Get-Content (Join-Path $root "modules/config.js") -Raw
+if ($config -notmatch 'DATA_URL\s*=\s*["\'']\.\/exports\/derived_jan_may_2025_2026\.json["\'']') {
+  Write-Host "ERROR: modules/config.js no apunta a ./exports/derived_jan_may_2025_2026.json" -ForegroundColor Red
   exit 1
 }
 
 # Verifica READ_ONLY_MODE
-if ($app -notmatch 'READ_ONLY_MODE\s*=\s*true') {
-  Write-Host "ERROR: READ_ONLY_MODE no está en true en app.js" -ForegroundColor Red
+if ($config -notmatch 'READ_ONLY_MODE\s*=\s*true') {
+  Write-Host "ERROR: READ_ONLY_MODE no está en true en modules/config.js" -ForegroundColor Red
   exit 1
 }
-
 Write-Host "OK: listo para Cloudflare Pages (read-only)." -ForegroundColor Green
